@@ -1,0 +1,20 @@
+[
+    {
+      "firstName": "Кк",
+      "lastName": "ВВ",
+      "patronymic": "СС",
+      "birth": "2015-05-15"
+    },
+    {
+      "firstName": "ВВ",
+      "lastName": "ДД",
+      "patronymic": "ЧЧ",
+      "birth": "2013-05-14"
+    },
+    {
+      "firstName": "Иванов",
+      "lastName": "Иван",
+      "patronymic": "Иванович",
+      "birth": "2021-06-01"
+    }
+  ]
