@@ -1,7 +1,7 @@
 # SImpleRestService
 A simple example of an application of the interaction of the rest-architecture in java and javacript. A little more than just a CRUD application. The bottom line: there are trade unions, there are members of these trade unions, there are membership cards and payments.
 
-## java:
+## Java:
 ### Stack: 
   Spring-boot, Spring-Data, Spring-Security (+ jwt), validation (commons-validator + small examples of custom validation), PostgreSQL
 
