@@ -4,6 +4,8 @@ import backend.persist.entity.*;
 import backend.persist.models.*;
 import backend.services.PersonService;
 import io.swagger.annotations.ApiImplicitParam;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,10 +27,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/persons")
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class PersonControllers {
-
     @Autowired
     private PersonService personService;
-
     @Autowired
     private UserController userController;
 

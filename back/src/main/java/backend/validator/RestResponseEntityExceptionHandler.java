@@ -3,6 +3,8 @@ package backend.validator;
 import backend.exceptions.*;
 import backend.security.UserDetailsServiceImpl;
 import backend.validator.error.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
@@ -81,7 +71,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return problem;
     }
 
-    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Exception exception = new Exception(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();

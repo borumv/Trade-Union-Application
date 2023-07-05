@@ -1,8 +1,7 @@
 package backend.validator.personValidator;
-import org.springframework.data.domain.DomainEvents;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class NotNullIfAnFieldHasValueValidator implements ConstraintValidator<NotNullIfAnotherFieldHasValue, Object> {
 

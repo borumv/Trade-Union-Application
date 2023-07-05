@@ -1,8 +1,7 @@
 package backend.controllers;
 
 import backend.persist.entity.WorkPlace;
-import backend.persist.models.PersonModel;
-import backend.services.WorkPlaceSevice;
+import backend.services.WorkPlaceService;
 import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,7 @@ import java.util.List;
 public class WorkPlaceController {
 
     @Autowired
-    WorkPlaceSevice workPlaceSevice;
+    WorkPlaceService workPlaceSevice;
     Logger logger = LoggerFactory.getLogger(WorkPlaceController.class);
 
     @GetMapping("/all")

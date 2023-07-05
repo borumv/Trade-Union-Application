@@ -2,7 +2,6 @@ package backend.controllers;
 
 import backend.exceptions.ErrorNewPasswordException;
 import backend.persist.entity.Permission;
-import backend.persist.entity.PersonEntity;
 import backend.persist.entity.User;
 import backend.persist.models.UserModel;
 import backend.persist.models.UserWithAuthoritiesModel;
@@ -18,16 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.Min;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated

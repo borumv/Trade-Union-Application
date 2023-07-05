@@ -3,7 +3,6 @@ package backend.controllers;
 import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
 import backend.persist.entity.TradeUnion;
-import backend.persist.models.JsonModel;
 import backend.persist.models.PersonModel;
 import backend.persist.models.TradeUnionModel;
 import backend.services.TradeUnionService;
@@ -18,8 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/union")
 @CrossOrigin(origins = {"http://localhost:3000"})
 public class TradeUnionController{
-
     @Autowired
     TradeUnionService tradeUnionService;
     Logger logger = LoggerFactory.getLogger(TradeUnionController.class);

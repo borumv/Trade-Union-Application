@@ -3,6 +3,7 @@ package backend.controllers;
 import backend.persist.entity.DocMember;
 import backend.services.DocMemberService;
 import io.swagger.annotations.ApiImplicitParam;
+import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController

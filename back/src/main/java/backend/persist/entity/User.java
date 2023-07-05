@@ -3,11 +3,11 @@ package backend.persist.entity;
 import backend.security.Role;
 import backend.security.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -21,7 +21,7 @@ public class User {
 
     @Column(name = "email")
     @Email
-    @Size (max = 20)
+    @Size(max = 20)
     private String username;
 
     @Size(min = 2, max = 20, message = "{firstname.size.error}")

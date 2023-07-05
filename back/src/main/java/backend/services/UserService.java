@@ -2,17 +2,13 @@ package backend.services;
 
 import backend.exceptions.ErrorNewPasswordException;
 import backend.exceptions.UserNameNotFoundException;
-import backend.persist.entity.Permission;
 import backend.persist.entity.User;
 import backend.persist.models.UserModel;
 import backend.persist.repositories.PermoRepo;
 import backend.persist.repositories.UserRepo;
 import backend.requests.ChangePasswordRequestr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -34,8 +30,6 @@ public class UserService {
     public UserModel changePassword(ChangePasswordRequestr changePasswordRequestr){
         User user = userRepo.findByUsername(changePasswordRequestr.getEmail())
                         .orElseThrow(() -> new UserNameNotFoundException(changePasswordRequestr.getEmail()));
-
-
         if(changePasswordRequestr.getActualPassword().equals(user.getPassword())) {
             user.setPassword(changePasswordRequestr.getNewPassword());
             userRepo.save(user);

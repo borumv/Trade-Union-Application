@@ -6,8 +6,6 @@ public enum Permissions {
     PERSONS_DELETE("persons:delete"),
     TRADEUNION_READ("tradeunion:read"),
     TRADEUNION_EDIT("tradeunion:edit");
-
-
     private final String permission;
     public String getPermission() {
         return permission;
