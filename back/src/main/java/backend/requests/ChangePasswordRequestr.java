@@ -1,10 +1,9 @@
 package backend.requests;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 
 @Data
 public class ChangePasswordRequestr {

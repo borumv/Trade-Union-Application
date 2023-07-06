@@ -2,7 +2,6 @@ package backend.controllers;
 
 import backend.persist.entity.DocMember;
 import backend.services.DocMemberService;
-import io.swagger.annotations.ApiImplicitParam;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ public class DocMemberController {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/all")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<DocMember> findDocMembersByLeaveDateIsNull(){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: findDocMembersByLeaveDateIsNull",  a.getName(), "DocMemberController");
@@ -34,7 +32,6 @@ public class DocMemberController {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{num}")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public DocMember findByNum(@PathVariable @Min(1) int num){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: findByNum",  a.getName(), "DocMemberController");

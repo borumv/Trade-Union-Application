@@ -15,8 +15,9 @@
     <description>REST API</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.opencsv</groupId>
@@ -32,10 +33,6 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,15 +54,15 @@
             <version>42.5.4</version>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.4</version>
         </dependency>
+
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
@@ -73,10 +70,22 @@
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
         </dependency>
-         <dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -84,11 +93,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.7</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>ch.qos.logback</groupId>-->
+        <!--            <artifactId>logback-classic</artifactId>-->
+        <!--            <version>1.4.7</version>-->
+        <!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -100,8 +109,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>

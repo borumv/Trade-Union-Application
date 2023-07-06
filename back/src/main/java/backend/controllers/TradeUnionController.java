@@ -6,7 +6,6 @@ import backend.persist.entity.TradeUnion;
 import backend.persist.models.PersonModel;
 import backend.persist.models.TradeUnionModel;
 import backend.services.TradeUnionService;
-import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ public class TradeUnionController{
 
     @GetMapping("/{unionId}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public TradeUnion getById(@PathVariable int unionId) throws RuntimeException{
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getById",  a.getName(), "TradeUnionController");
@@ -39,7 +37,6 @@ public class TradeUnionController{
 
     @GetMapping("/{unionId}/docpayments")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<DocPayment> getAllDocPayment(@PathVariable int unionId){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getAllDocPayment",  a.getName(), "TradeUnionController");
@@ -48,7 +45,6 @@ public class TradeUnionController{
 
     @GetMapping("/{unionId}/members{pageNumber}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<PersonModel> getAllMembers(@PathVariable int unionId, @PathVariable int pageNumber){
         List<PersonEntity> personEntityList = tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(1,3));
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -58,7 +54,6 @@ public class TradeUnionController{
 
     @GetMapping("/{unionId}/members")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<PersonModel> getAllMembers(@PathVariable int unionId){
         List<PersonEntity> personEntityList = tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(1,3));
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -67,7 +62,6 @@ public class TradeUnionController{
     }
 
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping()
     public List<TradeUnion> getAllTradeUnion(){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +71,6 @@ public class TradeUnionController{
 
 
     @PreAuthorize("hasAuthority('tradeunion:edit')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @DeleteMapping("/{unionId}")
     public TradeUnion delete(@PathVariable int unionId){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -86,7 +79,6 @@ public class TradeUnionController{
     }
 
     @PreAuthorize("hasAuthority('tradeunion:edit')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PostMapping()
     public TradeUnion add(@RequestBody TradeUnionModel tradeUnionModel , BindingResult bindingResult){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -95,7 +87,6 @@ public class TradeUnionController{
     }
 
     @PreAuthorize("hasAuthority('tradeunion:edit')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PutMapping("/{id}")
     public TradeUnion update(@PathVariable int id, @RequestBody TradeUnion item) {
        return tradeUnionService.update(id, item);

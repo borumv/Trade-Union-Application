@@ -4,20 +4,14 @@ import backend.exceptions.ClassEducationNotFoundException;
 import backend.persist.entity.ClassEducation;
 import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
-import backend.persist.models.ClassEducationModel;
-import backend.persist.models.PersonModel;
 import backend.persist.repositories.ClassEducationRepo;
 import backend.persist.repositories.PersonRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 public class ClassEducationService {
 

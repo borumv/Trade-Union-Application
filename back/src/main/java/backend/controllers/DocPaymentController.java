@@ -4,7 +4,6 @@ import backend.persist.entity.DocPayment;
 import backend.persist.models.DocPaymentModel;
 import backend.persist.models.QuantityPayTradeUnion;
 import backend.services.DocPaymentService;
-import io.swagger.annotations.ApiImplicitParam;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ public class DocPaymentController {
 
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping()
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<DocPaymentModel> getAll(){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getAll",  a.getName(), "DocPaymentController");
@@ -36,7 +34,6 @@ public class DocPaymentController {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{payId}")
     public DocPayment getById(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -45,7 +42,6 @@ public class DocPaymentController {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @DeleteMapping("/{payId}")
     public DocPayment Delete(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +51,6 @@ public class DocPaymentController {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PutMapping("/{payId}")
     public DocPayment update(@PathVariable int payId) {
 
@@ -67,7 +62,6 @@ public class DocPaymentController {
 
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping("/count")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<QuantityPayTradeUnion> geQuantityPay(){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: geQuantityPay",  a.getName(), "DocPaymentController");
@@ -76,7 +70,6 @@ public class DocPaymentController {
 
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping("/count_statistic")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<QuantityPayTradeUnion> getCountNotPaied(){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getDontPaied",  a.getName(), "DocPaymentController");

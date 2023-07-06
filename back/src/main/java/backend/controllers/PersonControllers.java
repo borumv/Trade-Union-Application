@@ -3,7 +3,6 @@ package backend.controllers;
 import backend.persist.entity.*;
 import backend.persist.models.*;
 import backend.services.PersonService;
-import io.swagger.annotations.ApiImplicitParam;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ public class PersonControllers {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/all{page}")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<AbstractModel> showPersonsList(@PathVariable int page) {
 //        List<PersonEntity> list = personService.getAllPersons();
         UserWithAuthoritiesModel user = userController.getUser();
@@ -58,7 +56,6 @@ public class PersonControllers {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping()
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<AbstractModel> showPersonsList() {
         List<AbstractModel> listModel = new ArrayList<>();
         UserModel user = userController.getActualUser();
@@ -82,7 +79,6 @@ public class PersonControllers {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/allOrder")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public List<PersonModel> showPersonsListWhereNameStartWith(@PathVariable String startWith) {
         List<PersonEntity> list = personService.getAllPersonsWhereNameStartWith(startWith);
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -91,7 +87,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{userId}")
     public PersonEntity getById(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -100,7 +95,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:write')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PostMapping()
     public PersonModel addPerson(@RequestBody @Valid PersonEntity personEntity) {
         logger.trace("addPerson method accesed");
@@ -112,7 +106,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:delete')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @DeleteMapping("/{id}")
     public PersonEntity deletePerson(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int id) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -121,7 +114,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{userId}/doc_member")
     public List<DocMember> getDocTrade(int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -130,7 +122,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{userId}/doc_payment")
     public List<DocPaymentModel> getDocPayments(@PathVariable int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -139,7 +130,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{userId}/class_education")
     public String getEducation(int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -148,7 +138,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/{userId}/workplace")
     public List<WorkPlace> getWorkPlace(int personId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -157,7 +146,6 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PutMapping("/{id}")
     public PersonEntity update(@PathVariable int id, @RequestBody PersonEntity item) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();

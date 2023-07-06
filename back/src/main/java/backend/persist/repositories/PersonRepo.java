@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface PersonRepo extends PagingAndSortingRepository<PersonEntity,Integer> {
 
     void delete(PersonEntity personEntity);
-    void save(PersonEntity personEntity);
+    PersonEntity save(PersonEntity personEntity);
     Optional<PersonEntity> findById(int id);
     void deleteById(int id);
 

@@ -11,8 +11,6 @@ public enum Role {
                     Permissions.TRADEUNION_EDIT).collect(Collectors.toSet())),
     USER(Stream.of(Permissions.PERSONS_READ, Permissions.TRADEUNION_READ).collect(Collectors.toSet())),
     SUPERADMIN(Stream.of(Permissions.TRADEUNION_EDIT).collect(Collectors.toSet()));
-
-
     private final Set<Permissions> permissions;
 
     Role(Set<Permissions> permissions) {

@@ -11,7 +11,7 @@ import backend.services.PermissionService;
 import backend.services.UserService;
 import backend.validator.ValidationProblem;
 import backend.validator.error.ValidationError;
-import io.swagger.annotations.ApiImplicitParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,6 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping()
     public UserWithAuthoritiesModel getUser() {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -56,14 +55,12 @@ public class UserController {
         return UserModel.toModel(user);
     }
 
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @GetMapping("/permissions")
     public List<Permission> getPermisionList(Role role){
         return permissionSevice.getPermission(role);
     }
 
 
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     @PostMapping("/change_password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequestr req) {
        try {

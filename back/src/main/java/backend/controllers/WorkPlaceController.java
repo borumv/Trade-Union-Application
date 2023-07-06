@@ -2,7 +2,6 @@ package backend.controllers;
 
 import backend.persist.entity.WorkPlace;
 import backend.services.WorkPlaceService;
-import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ public class WorkPlaceController {
 
     @GetMapping("/{workPlaceId}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public WorkPlace getById(@PathVariable int workPlaceId){
         return workPlaceSevice.getById(workPlaceId);
     }

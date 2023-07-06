@@ -15,8 +15,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,11 +30,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     protected final Log logger = LogFactory.getLog(getClass());
@@ -41,52 +44,72 @@ public class WebSecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private final ObjectMapper om = new ObjectMapper();
     private final UserDetailsService jwtUserDetailsService;
-
-
     public WebSecurityConfig(JwtConfigure jwtConfigure, JwtTokenFilter jwtTokenFilter, @Qualifier("userDetailsServiceImpl") UserDetailsService jwtUserDetailsService) {
         this.jwtConfigure = jwtConfigure;
         this.jwtTokenFilter = jwtTokenFilter;
         this.jwtUserDetailsService = jwtUserDetailsService;
     }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests()
+//                .requestMatchers("/api/auth/login", "/api/auth/register", "/webjars/springfox-swagger-ui/", "/api/auth/", "/swagger-ui/index.html", "/swagger-ui.html/", "/api/user/findEmail")
+//                .permitAll()
+//                .and().authorizeHttpRequests()
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(unautorizedHadler)
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .apply(jwtConfigure);
+//        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//       http
+//                .exceptionHandling()
+//                .accessDeniedHandler((request, response, accessDeniedException) -> {
+//                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+//                    logger.error(accessDeniedException.getMessage() + " -> " + request.getRequestURI() + " : " + auth.getName());
+//
+//                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//
+//                    ServletOutputStream out = response.getOutputStream();
+//                    om.writeValue(out, accessDeniedException.getMessage());
+//                    out.flush();
+//                });
+//
+//        return http.build();
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests()
-                .requestMatchers("/api/auth/login", "/api/auth/register", "/webjars/springfox-swagger-ui/", "/api/auth/", "/swagger-ui.html", "/swagger-ui.html/", "/api/user/findEmail")
-                .permitAll()
-                .and().authorizeHttpRequests()
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorizeHttpRequests) ->
+                        authorizeHttpRequests
+                                .requestMatchers("/api/auth/**", "/webjars/springfox-swagger-ui/", "/api/auth/", "/swagger-ui/index.html", "/swagger-ui.html/")
+                                .permitAll()
+                                .anyRequest()
+
+                            .authenticated()
+
+                )
+
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .apply(jwtConfigure)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(unautorizedHadler)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .apply(jwtConfigure);
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        http
-                .exceptionHandling()
-                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-                    logger.error(accessDeniedException.getMessage() + " -> " + request.getRequestURI() + " : " + auth.getName());
-
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-                    ServletOutputStream out = response.getOutputStream();
-                    om.writeValue(out, accessDeniedException.getMessage());
-                    out.flush();
-                });
-
-        return http.build();
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 
-//    @Override
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/api/auth/login", "/api/auth/register", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**","/api/user/findEmail");
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
