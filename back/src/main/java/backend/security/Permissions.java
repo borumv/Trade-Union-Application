@@ -11,12 +11,14 @@ public enum Permissions {
     TRADEUNION_READ("tradeunion:read"),
     TRADEUNION_EDIT("tradeunion:edit");
     private final String permission;
+
     /**
      * Constructs a new permission with the specified string representation.
      *
      * @param permission the string representation of the permission
      */
     Permissions(String permission) {
+
         this.permission = permission;
     }
 
@@ -26,6 +28,7 @@ public enum Permissions {
      * @return the string representation of the permission
      */
     public String getPermission() {
+
         return permission;
     }
 

@@ -1,5 +1,6 @@
 package backend.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  * It configures the JwtTokenFilter to be applied before the UsernamePasswordAuthenticationFilter in the HttpSecurity.
  */
 @Component
+@Slf4j
 public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     JwtTokenFilter jwtTokenFilter;
@@ -31,6 +33,7 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
      */
     @Override
     public void configure(HttpSecurity httpSecurity) {
+        log.info("method method call in JwtConfigure call" + httpSecurity.toString());
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

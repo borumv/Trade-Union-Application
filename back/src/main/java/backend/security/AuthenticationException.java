@@ -1,17 +1,22 @@
 package backend.security;
 
+import backend.validator.error.ValidationError;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JwtAuthenticationException is an exception class that extends AuthenticationException.
  * It represents an exception related to JWT authentication.
  */
 @Getter
-public class JwtAuthenticationException extends AuthenticationException {
+public class AuthenticationException extends org.springframework.security.core.AuthenticationException {
 
     private HttpStatus httpStatus;
+    private List<ValidationError> errors;
 
     /**
      * Constructs a new JwtAuthenticationException with the specified detail message and cause.
@@ -19,7 +24,7 @@ public class JwtAuthenticationException extends AuthenticationException {
      * @param msg the detail message
      * @param t   the cause of the exception
      */
-    public JwtAuthenticationException(String msg, Throwable t) {
+    public AuthenticationException(String msg, Throwable t) {
         super(msg, t);
     }
 
@@ -29,9 +34,10 @@ public class JwtAuthenticationException extends AuthenticationException {
      * @param msg         the detail message
      * @param httpStatus  the HTTP status associated with the exception
      */
-    public JwtAuthenticationException(String msg, HttpStatus httpStatus) {
+    public AuthenticationException(String msg, HttpStatus httpStatus, List<ValidationError> errors) {
         super(msg);
         this.httpStatus = httpStatus;
+        this.errors = errors;
     }
 
     /**
@@ -39,7 +45,7 @@ public class JwtAuthenticationException extends AuthenticationException {
      *
      * @param s the detail message
      */
-    public JwtAuthenticationException(String s) {
+    public AuthenticationException(String s) {
         super(s);
     }
 }

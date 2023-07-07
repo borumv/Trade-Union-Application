@@ -5,11 +5,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+
 import java.io.IOException;
 
 /**
@@ -19,16 +23,22 @@ import java.io.IOException;
 @Component
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
+    private final UserDetailsService userDetailsService;
 
     /**
      * Constructs a new JwtTokenFilter with the JwtTokenProvider.
      *
-     * @param jwtTokenProvider the JwtTokenProvider used for token operations
+     * @param jwtTokenProvider   the JwtTokenProvider used for token operations
+     * @param userDetailsService
      */
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider,
+                          @Qualifier("userDetailsServiceImpl")
+                          UserDetailsService userDetailsService) {
+
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     /**
@@ -42,24 +52,35 @@ public class JwtTokenFilter extends GenericFilterBean {
      * @throws ServletException if a servlet-related error occurs during the filter process
      */
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException,  ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
-        try {
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain filterChain) throws IOException, ServletException {
 
-            if (token != null) {
-                token = token.split(" ")[1].trim();
-                jwtTokenProvider.validateToken(token);
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+        final String authHeader = ( (HttpServletRequest) servletRequest ).getHeader("Authorization");
+        final String jwt;
+        final String userEmail;
+        if (authHeader == null || ! authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+        jwt = authHeader.substring(7);
+        userEmail = jwtTokenProvider.extractEmail(jwt);
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            //Get our users data from db
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            //check if the user is valid or not
+            if (jwtTokenProvider.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) servletRequest)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-        } catch (JwtAuthenticationException e) {
-            SecurityContextHolder.clearContext();
-            ((HttpServletResponse) servletResponse).sendError(e.getHttpStatus().value());
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
         filterChain.doFilter(servletRequest, servletResponse);
-
     }
 }

@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  */
 public enum Role {
     ADMIN(Stream.of(Permissions.PERSONS_READ, Permissions.PERSONS_WRITE, Permissions.PERSONS_DELETE, Permissions.TRADEUNION_READ,
-            Permissions.TRADEUNION_EDIT).collect(Collectors.toSet())),
+                    Permissions.TRADEUNION_EDIT).collect(Collectors.toSet())),
     USER(Stream.of(Permissions.PERSONS_READ, Permissions.TRADEUNION_READ).collect(Collectors.toSet())),
     SUPERADMIN(Stream.of(Permissions.TRADEUNION_EDIT).collect(Collectors.toSet()));
     private final Set<Permissions> permissions;

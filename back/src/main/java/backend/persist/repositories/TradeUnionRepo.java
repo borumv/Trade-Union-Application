@@ -1,5 +1,4 @@
 package backend.persist.repositories;
-;
 import backend.persist.entity.TradeUnion;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
