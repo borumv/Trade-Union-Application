@@ -20,7 +20,7 @@ public class UserService {
     PermoRepo permoRepo;
 
     public User findByEmail(String email) {
-        return userRepo.findByUsername(email).orElseThrow(() -> new UserNameNotFoundException("not found with email this - " + email));
+        return userRepo.findByEmail(email).orElseThrow(() -> new UserNameNotFoundException("not found with email this - " + email));
     }
 
     public User save(User user) {
@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public UserModel changePassword(ChangePasswordRequestr changePasswordRequestr) {
-        User user = userRepo.findByUsername(changePasswordRequestr.getEmail())
+        User user = userRepo.findByEmail(changePasswordRequestr.getEmail())
                 .orElseThrow(() -> new UserNameNotFoundException(changePasswordRequestr.getEmail()));
         if (changePasswordRequestr.getActualPassword().equals(user.getPassword())) {
             user.setPassword(changePasswordRequestr.getNewPassword());
