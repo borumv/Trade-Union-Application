@@ -3,11 +3,12 @@ package backend.persist.entity;
 import backend.security.Role;
 import backend.security.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -21,8 +22,8 @@ public class User {
 
     @Column(name = "email")
     @Email
-    @Size (max = 20)
-    private String username;
+    @Size(max = 20)
+    private String email;
 
     @Size(min = 2, max = 20, message = "{firstname.size.error}")
     @Column(name = "first_name")
@@ -45,4 +46,19 @@ public class User {
     @ManyToMany
     @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)
     private List<Permission> permissionList;
+
+    public User() {
+
+    }
+    @Builder
+    public User(Long id, String email, String firstName, String lastName, String password, Role role, Status status, List<Permission> permissionList) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.permissionList = permissionList;
+    }
 }

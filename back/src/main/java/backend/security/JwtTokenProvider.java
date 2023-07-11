@@ -1,76 +1,154 @@
 package backend.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
+import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.function.Function;
 
+/**
+ * JwtTokenProvider is a component that provides operations related to JWT tokens.
+ */
 @Component
 public class JwtTokenProvider {
 
-
     private final UserDetailsService userDetailsService;
+
     @Value("${jwt.secret}")
     private String secretkey;
 
     @Value("${jwt.header}")
     private String authorizationHeader;
 
-    @Value("${jwt.expiration}")
-    private long validitymiliseconds;
+    /**
+     * Constructs a new JwtTokenProvider with the specified UserDetailsService.
+     *
+     * @param userDetailsService the UserDetailsService used for user-related operations
+     */
+    public JwtTokenProvider(
+            @Qualifier("userDetailsServiceImpl")
+            UserDetailsService userDetailsService) {
 
-    public JwtTokenProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
-    protected void init() {
-        secretkey = Base64.getEncoder().encodeToString(secretkey.getBytes());
-    }
+    /**
+     * Creates a new JWT token for the specified username and role.
+     *
+     * @param username the username
+     * @return the generated JWT token
+     */
+    public String createToken(String username) {
 
-    public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("role", role);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validitymiliseconds * 1000);
-
+        Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        Instant expiration = issuedAt.plus(30, ChronoUnit.MINUTES);
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretkey)
-                .compact();
+                .setSubject(username)
+                .setIssuedAt(Date.from(issuedAt))
+                .setExpiration(Date.from(expiration))
+                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 
     }
 
-    public boolean validateToken(String token) {
+    private Key getSignKey() {
 
-        try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token);
-            return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationExeption("JWT token invalid", HttpStatus.UNAUTHORIZED);
-        }
+        byte[] keyBytes = Decoders.BASE64.decode(secretkey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * Validates the specified JWT token.
+     *
+     * @param token the JWT token to validate
+     * @throws JwtException if the token is invalid or expired
+     */
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+
+        final String email = extractEmail(token);
+        return ( email.equals(userDetails.getUsername()) ) && ! isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    /**
+     * Retrieves the authentication object for the specified JWT token.
+     *
+     * @param token the JWT token
+     * @return the Authentication object
+     */
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
+
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(extractEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUserName(String token) {
-        return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody().getSubject();
+    /**
+     * Extracts a specific claim from the JWT token.
+     *
+     * @param token          the JWT token
+     * @param claimsResolver the function to resolve the desired claim from the Claims object
+     * @param <T>            the type of the claim value
+     * @return the extracted claim value
+     */
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
+    private Claims extractAllClaims(String token) {
+
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /**
+     * Extracts the email (subject) from the JWT token.
+     *
+     * @param token the JWT token
+     * @return the extracted email
+     */
+    public String extractEmail(String token) {
+
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    /**
+     * Resolves the JWT token from the Authorization header in the HttpServletRequest.
+     *
+     * @param request the HttpServletRequest object
+     * @return the resolved JWT token
+     */
     public String resolveToken(HttpServletRequest request) {
+
         return request.getHeader(authorizationHeader);
     }
 }

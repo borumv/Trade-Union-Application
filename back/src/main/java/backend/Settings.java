@@ -1,51 +1,59 @@
 package backend;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.springframework.hateoas.client.LinkDiscoverer;
-import org.springframework.hateoas.client.LinkDiscoverers;
-import org.springframework.hateoas.mediatype.collectionjson.CollectionJsonLinkDiscoverer;
-import org.springframework.plugin.core.SimplePluginRegistry;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableSwagger2
 public class Settings {
 
-    @Bean
-    public CommonsRequestLoggingFilter requestLoggingFilter() {
-        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setMaxPayloadLength(64000);
-        return loggingFilter;
+    private final UserDetailsService userDetailsService;
+
+    public Settings(
+            @Qualifier("userDetailsServiceImpl")
+            UserDetailsService userDetailsService) {
+
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public LinkDiscoverers discoverers() {
-        List<LinkDiscoverer> plugins = new ArrayList<>();
-        plugins.add(new CollectionJsonLinkDiscoverer());
-        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+    public UserDetailsService userDetailsService() {
 
+        return username -> userDetailsService.loadUserByUsername(username);
     }
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("backend.controllers"))
-                .paths(PathSelectors.any())
-                .build();
+    public AuthenticationProvider authenticationProvider() {
+
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public Authentication getAuthentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
 }

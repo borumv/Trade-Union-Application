@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface WorkPlaceRepo extends CrudRepository<WorkPlace, Integer> {
 
-    public List<WorkPlace> findAll();
+    List<WorkPlace> findAll();
 
 
 }

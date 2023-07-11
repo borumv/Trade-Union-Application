@@ -1,8 +1,11 @@
 package backend.validator;
 
 import backend.exceptions.*;
+import backend.security.AuthenticationException;
 import backend.security.UserDetailsServiceImpl;
 import backend.validator.error.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +30,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
@@ -47,6 +40,20 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<List<CustomErrorResponse>> authenticationException(AuthenticationException a) {
+        List<CustomErrorResponse> customErrorResponses = new ArrayList<>();
+        a.getErrors()
+                .forEach(error -> {
+                    customErrorResponses.add(CustomErrorResponse.builder()
+                                                     .message(error.getMessage())
+                                                     .status(HttpStatus.FORBIDDEN.value())
+                                                     .path(error.getPath())
+                                                     .error("Authentication error")
+                                                     .build());
+                });
+        return new ResponseEntity<>(customErrorResponses, HttpStatus.FORBIDDEN);
+    }
 
     @ExceptionHandler({PersonNotFoundException.class,
             ClassEducationNotFoundException.class,
@@ -54,7 +61,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             WorkPlaceNotFoundException.class,
             TradeUnionNotFoundExeption.class,
             UserNameNotFoundException.class,
-            ErrorNewPasswordException.class,})
+            ErrorNewPasswordException.class,}
+    )
     public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request, Principal principal) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
@@ -62,7 +70,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         errors.setStatus(HttpStatus.NOT_FOUND.value());
         errors.setMessage(ex.getMessage());
         errors.setPath(ex.getMessage().split(" ")[0]);
-
         logger.error("UserId: {}. {}", principal.getName(), errors.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
@@ -71,6 +78,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     public ValidationProblem onConstraintValidationException(ConstraintViolationException e, Principal principal) {
+
         ValidationProblem problem = new ValidationProblem();
         problem.setMessage(e.getMessage());
         for (ConstraintViolation violation : e.getConstraintViolations()) {
@@ -81,8 +89,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return problem;
     }
 
-    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
         Exception exception = new Exception(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -91,15 +99,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     private ResponseEntity<Object> createResponseEntity(HttpStatus httpStatus, Exception ex, WebRequest request, List<ObjectError> errors) {
-        MainCustomErrorResponse mainCustomErrorResponse = new MainCustomErrorResponse();
 
+        MainCustomErrorResponse mainCustomErrorResponse = new MainCustomErrorResponse();
         for (ObjectError fieldError : errors) {
             if (fieldError instanceof FieldError) {
                 CustomErrorResponse customErrorResponse = CustomErrorResponse.builder()
                         .status(httpStatus.value())
                         .error(httpStatus.getReasonPhrase())
                         .message(fieldError.getDefaultMessage())
-                        .path(((FieldError) fieldError).getField())
+                        .path(( (FieldError) fieldError ).getField())
                         .build();
                 mainCustomErrorResponse.getErrors().add(customErrorResponse);
             } else {
@@ -112,8 +120,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 mainCustomErrorResponse.getErrors().add(customErrorResponse);
             }
         }
-
-
         return handleExceptionInternal(ex, mainCustomErrorResponse, new HttpHeaders(), httpStatus, request);
     }
 }

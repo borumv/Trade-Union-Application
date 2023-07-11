@@ -1,11 +1,8 @@
 package backend.persist.repositories;
 
-
-import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
@@ -13,9 +10,10 @@ import java.util.Optional;
 
 public interface PersonRepo extends PagingAndSortingRepository<PersonEntity,Integer> {
 
-    @Override
     void delete(PersonEntity personEntity);
-//    PersonEntity findById(int id);
+    PersonEntity save(PersonEntity personEntity);
+    Optional<PersonEntity> findById(int id);
+    void deleteById(int id);
 
     List<PersonEntity> findAll();
     List<PersonEntity> findByFirstNameStartsWith(String firstNameStart, Pageable pageable);

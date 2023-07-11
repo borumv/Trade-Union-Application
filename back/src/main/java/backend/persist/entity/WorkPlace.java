@@ -4,12 +4,12 @@ import backend.validator.personValidator.FirstSecondFieldInterface;
 import backend.validator.personValidator.NotNullIfAnotherFieldHasValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
+
 
 @Data
 @Entity

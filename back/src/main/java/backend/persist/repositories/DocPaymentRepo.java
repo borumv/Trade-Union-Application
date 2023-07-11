@@ -11,8 +11,8 @@ import javax.print.Doc;
 import java.util.List;
 
 public interface DocPaymentRepo extends CrudRepository<DocPayment,Integer> {
-    public DocPayment findDocPaymentByPersonId(int id);
-    public List<DocPayment> findAll();
+    DocPayment findDocPaymentByPersonId(int id);
+    List<DocPayment> findAll();
 
     @Query(value = "SELECT name, COUNT (doc_payment.id) FROM doc_payment INNER JOIN class_org ON doc_payment.org_id = class_org.id GROUP BY name",  nativeQuery = true )
     List<QuantityPayTradeUnion>getQuantityPay();

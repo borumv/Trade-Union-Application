@@ -1,9 +1,7 @@
 package backend.controllers;
 
 import backend.persist.entity.WorkPlace;
-import backend.persist.models.PersonModel;
-import backend.services.WorkPlaceSevice;
-import io.swagger.annotations.ApiImplicitParam;
+import backend.services.WorkPlaceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import java.util.List;
 public class WorkPlaceController {
 
     @Autowired
-    WorkPlaceSevice workPlaceSevice;
+    WorkPlaceService workPlaceSevice;
     Logger logger = LoggerFactory.getLogger(WorkPlaceController.class);
 
     @GetMapping("/all")
@@ -32,7 +30,6 @@ public class WorkPlaceController {
 
     @GetMapping("/{workPlaceId}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "XXX")
     public WorkPlace getById(@PathVariable int workPlaceId){
         return workPlaceSevice.getById(workPlaceId);
     }

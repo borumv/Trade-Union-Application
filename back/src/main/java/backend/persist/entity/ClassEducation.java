@@ -1,13 +1,8 @@
 package backend.persist.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "class_education")

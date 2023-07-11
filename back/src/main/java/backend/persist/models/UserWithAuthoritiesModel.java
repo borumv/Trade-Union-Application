@@ -5,7 +5,6 @@ import backend.persist.entity.User;
 import backend.security.Role;
 import backend.security.Status;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class UserWithAuthoritiesModel {
     public static UserWithAuthoritiesModel toModel(User user, List<Permission> permissions){
         UserWithAuthoritiesModel userWithAuthoritiesModel = new UserWithAuthoritiesModel();
         userWithAuthoritiesModel.setPermissionList(permissions);
-        userWithAuthoritiesModel.setUserName(user.getUsername());
+        userWithAuthoritiesModel.setUserName(user.getEmail());
         userWithAuthoritiesModel.setFirstName(user.getFirstName());
         userWithAuthoritiesModel.setLastName(user.getLastName());
         userWithAuthoritiesModel.setPassword(userWithAuthoritiesModel.getPassword());

@@ -5,13 +5,13 @@ import backend.validator.personValidator.FirstSecondFieldInterface;
 import backend.validator.personValidator.NotNullIfAnotherFieldHasValue;
 import backend.validator.dateValidator.CustomDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
-
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
