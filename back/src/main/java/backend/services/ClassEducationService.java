@@ -26,7 +26,7 @@ public class ClassEducationService {
 
     public List<PersonEntity> getAllWhoTakeThisTypeEducation(int typeEducationId){
         String nameEducation = classEducationRepo.findById(typeEducationId).get().getName();
-             Query q = em.createNativeQuery("SELECT\n" +
+        Query q = em.createNativeQuery("SELECT\n" +
                      "\tperson_main.*\n" +
                      "FROM\n" +
                      "\tperson_main\n" +
