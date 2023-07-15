@@ -22,74 +22,98 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/union")
 @CrossOrigin(origins = {"http://localhost:3000"})
-public class TradeUnionController{
+public class TradeUnionController {
+
     @Autowired
     TradeUnionService tradeUnionService;
     Logger logger = LoggerFactory.getLogger(TradeUnionController.class);
 
     @GetMapping("/{unionId}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    public TradeUnion getById(@PathVariable int unionId) throws RuntimeException{
+    public TradeUnion getById(
+            @PathVariable
+            int unionId) throws RuntimeException {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getById",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: getById", a.getName(), "TradeUnionController");
         return tradeUnionService.getById(unionId);
     }
 
     @GetMapping("/{unionId}/docpayments")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    public List<DocPayment> getAllDocPayment(@PathVariable int unionId){
+    public List<DocPayment> getAllDocPayment(
+            @PathVariable
+            int unionId) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getAllDocPayment",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: getAllDocPayment", a.getName(), "TradeUnionController");
         return tradeUnionService.getAllDocPayments(unionId);
     }
 
     @GetMapping("/{unionId}/members{pageNumber}")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    public List<PersonModel> getAllMembers(@PathVariable int unionId, @PathVariable int pageNumber){
-        List<PersonEntity> personEntityList = tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(1,3));
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getAllMembers",  a.getName(), "TradeUnionController");
-        return tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(pageNumber,15)).stream().map(PersonModel::toModel).collect(Collectors.toList());}
+    public List<PersonModel> getAllMembers(
+            @PathVariable
+            int unionId,
+            @PathVariable
+            int pageNumber) {
 
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("UserId: {}. Class: {} Action: getAllMembers", a.getName(), "TradeUnionController");
+        return tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(pageNumber, 15)).stream().map(PersonModel::toModel).collect(Collectors.toList());
+    }
 
     @GetMapping("/{unionId}/members")
     @PreAuthorize("hasAuthority('tradeunion:read')")
-    public List<PersonModel> getAllMembers(@PathVariable int unionId){
-        List<PersonEntity> personEntityList = tradeUnionService.getAllActiveMembers(unionId, PageRequest.of(1,3));
+    public List<PersonModel> getAllMembers(
+            @PathVariable
+            int unionId) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getAllMembers",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: getAllMembers", a.getName(), "TradeUnionController");
         return tradeUnionService.getAllActiveWithoutPageable(unionId).stream().map(PersonModel::toModel).collect(Collectors.toList());
     }
 
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping()
-    public List<TradeUnion> getAllTradeUnion(){
+    public List<TradeUnion> getAllTradeUnion() {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getAllTradeUnion",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: getAllTradeUnion", a.getName(), "TradeUnionController");
         return tradeUnionService.getAllNaturalTradeUnions();
     }
 
-
     @PreAuthorize("hasAuthority('tradeunion:edit')")
     @DeleteMapping("/{unionId}")
-    public TradeUnion delete(@PathVariable int unionId){
+    public TradeUnion delete(
+            @PathVariable
+            int unionId) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: delete",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: delete", a.getName(), "TradeUnionController");
         return tradeUnionService.deleteTradeUnion(unionId);
     }
 
     @PreAuthorize("hasAuthority('tradeunion:edit')")
     @PostMapping()
-    public TradeUnion add(@RequestBody TradeUnionModel tradeUnionModel , BindingResult bindingResult){
+    public TradeUnion add(
+            @RequestBody
+            TradeUnionModel tradeUnionModel, BindingResult bindingResult) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: add",  a.getName(), "TradeUnionController");
+        logger.info("UserId: {}. Class: {} Action: add", a.getName(), "TradeUnionController");
         return tradeUnionService.createTradeUnion(tradeUnionModel);
     }
 
     @PreAuthorize("hasAuthority('tradeunion:edit')")
     @PutMapping("/{id}")
-    public TradeUnion update(@PathVariable int id, @RequestBody TradeUnion item) {
-       return tradeUnionService.update(id, item);
+    public TradeUnion update(
+            @PathVariable
+            int id,
+            @RequestBody
+            TradeUnion item) {
+
+        return tradeUnionService.update(id, item);
 
     }
 }
