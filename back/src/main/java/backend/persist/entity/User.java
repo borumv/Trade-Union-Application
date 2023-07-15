@@ -45,6 +45,7 @@ public class User {
 
     @ManyToMany
     @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)
+    @JsonIgnore
     private List<Permission> permissionList;
 
     public User() {

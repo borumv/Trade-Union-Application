@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class DocPaymentService  extends BaseRestController {
+public class DocPaymentService extends BaseRestController {
 
     @Autowired
     DocPaymentRepo paymentRepo;
@@ -23,38 +23,49 @@ public class DocPaymentService  extends BaseRestController {
     @Autowired
     QuantityPayment qantityPaymentRepo;
 
-    public List<DocPayment> getAll(){
+    public List<DocPayment> getAll() {
+
         return paymentRepo.findAll();
     }
 
-    public  List<QuantityPayTradeUnion> getPayCountOfTradeUnion(){
+    public List<QuantityPayTradeUnion> getPayCountOfTradeUnion() {
+
         return qantityPaymentRepo.getQuantityPay();
     }
 
-    public  List<QuantityPayTradeUnion> getDontPaied(){
+    public List<QuantityPayTradeUnion> getDontPaied() {
+
         return qantityPaymentRepo.getDontPaied();
     }
 
-    public DocPayment findById(int id){
+    public DocPayment findById(int id) {
+
         return paymentRepo.findById(id)
-                .orElseThrow(()-> new DocPaymentNotFoundException(id));
+                .orElseThrow(() -> new DocPaymentNotFoundException(id));
     }
 
-    public DocPayment createDocPayment(DocPayment docPayment){
+    public DocPayment createDocPayment(DocPayment docPayment) {
+
         return paymentRepo.save(docPayment);
     }
-    public DocPayment update(int paymentId){
-      DocPayment docPayment =  paymentRepo.findById(paymentId)
-               .orElseThrow(() -> new DocPaymentNotFoundException(paymentId));
-      docPayment.setEndPay(new Date());
-      docPayment.setId(paymentId);
-      return paymentRepo.save(docPayment);
+
+    public DocPayment update(int paymentId) {
+
+        DocPayment docPayment = paymentRepo.findById(paymentId)
+                .orElseThrow(() -> new DocPaymentNotFoundException(paymentId));
+        docPayment.setEndPay(new Date());
+        docPayment.setId(paymentId);
+        return paymentRepo.save(docPayment);
     }
 
-
     public DocPayment deletePayment(int id) {
+
         DocPayment docPayment = new DocPayment();
         paymentRepo.deleteById(id);
         return docPayment;
+    }
+
+    public  void deleteByPersonId(int id){
+        paymentRepo.deleteByPersonId(id);
     }
 }

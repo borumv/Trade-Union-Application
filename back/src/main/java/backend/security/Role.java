@@ -1,10 +1,10 @@
 package backend.security;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+        import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+        import java.util.Set;
+        import java.util.stream.Collectors;
+        import java.util.stream.Stream;
 
 /**
  * The Role enum represents different roles in the system.

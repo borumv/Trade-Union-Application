@@ -6,7 +6,7 @@ CREATE SEQUENCE payment_id_seq
     INCREMENT 1
     MINVALUE  1
     MAXVALUE 9223372036854775807
-    START 1
+    START WITH 1
     CACHE 1;
 
 
@@ -39,7 +39,7 @@ INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated
 INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (3, '2021-06-26', '2022-04-23', 1, '2022-04-23 10:40:49.419', 5);
 INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (5, '2020-08-05', '2022-04-23', 1, '2022-04-23 18:36:24.386', 4);
 INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (6, '2020-06-20', '2022-04-23', 1, '2022-04-23 19:23:40.794', 3);
-INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (7, '2022-05-05', NULL, 0, '2022-05-05 18:39:37.462019', 15);
-INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (5, '2022-05-05', NULL, 0, '2022-05-05 18:43:46.039922', 23);
+INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (7, '2022-05-05', NULL, 2, '2022-05-05 18:39:37.462019', 15);
+INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (5, '2022-05-05', NULL, 2, '2022-05-05 18:43:46.039922', 23);
 INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (1, '2022-04-01', '2022-05-06', 1, '2022-05-06 09:26:37.641', 13);
-INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (1, '2022-05-05', '2022-05-07', 35, '2022-05-07 19:15:13.847', 27);
+INSERT INTO "doc_payment"("person_id", "created", "finished", "org_id", "updated", "id") VALUES (1, '2022-05-05', '2022-05-07', 2, '2022-05-07 19:15:13.847', 27);

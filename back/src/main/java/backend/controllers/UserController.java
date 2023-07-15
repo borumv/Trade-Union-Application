@@ -5,7 +5,7 @@ import backend.persist.entity.Permission;
 import backend.persist.entity.User;
 import backend.persist.models.UserModel;
 import backend.persist.models.UserWithAuthoritiesModel;
-import backend.requests.ChangePasswordRequestr;
+import backend.requests.ChangePasswordRequest;
 import backend.security.Role;
 import backend.services.AuthenticationService;
 import backend.services.PermissionService;
@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @Transactional
     public UserWithAuthoritiesModel getUser() {
 
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -69,7 +71,7 @@ public class UserController {
     @PostMapping("/change_password")
     public ResponseEntity<?> changePassword(
             @RequestBody
-            ChangePasswordRequestr req) {
+            ChangePasswordRequest req) {
 
         try {
             Map<Object, Object> response = new HashMap<>();

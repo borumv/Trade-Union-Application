@@ -78,7 +78,7 @@ public class PersonControllers {
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
-    @GetMapping("/allOrder")
+    @GetMapping("/pattern={startWith}")
     public List<PersonModel> showPersonsListWhereNameStartWith(@PathVariable String startWith) {
         List<PersonEntity> list = personService.getAllPersonsWhereNameStartWith(startWith);
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -110,12 +110,13 @@ public class PersonControllers {
     public PersonEntity deletePerson(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int id) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: deletePerson", a.getName(), "PersonControllers");
+
         return personService.deletePerson(id);
     }
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{userId}/doc_member")
-    public List<DocMember> getDocTrade(int userId) {
+    public List<DocMember> getDocTrade(@PathVariable int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getDocTrade", a.getName(), "PersonControllers");
         return personService.getDocTradeUnion(userId);
@@ -131,7 +132,7 @@ public class PersonControllers {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{userId}/class_education")
-    public String getEducation(int userId) {
+    public String getEducation(@PathVariable  int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getEducation", a.getName(), "PersonControllers");
         return personService.getEducation(userId);
@@ -139,10 +140,10 @@ public class PersonControllers {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{userId}/workplace")
-    public List<WorkPlace> getWorkPlace(int personId) {
+    public List<WorkPlace> getWorkPlace(@PathVariable int userId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: getWorkPlace", a.getName(), "PersonControllers");
-        return personService.getWorkPlace(personId);
+        return personService.getWorkPlace(userId);
     }
 
     @PreAuthorize("hasAuthority('persons:read')")

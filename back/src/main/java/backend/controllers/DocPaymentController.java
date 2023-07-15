@@ -43,7 +43,7 @@ public class DocPaymentController {
 
     @PreAuthorize("hasAuthority('persons:read')")
     @DeleteMapping("/{payId}")
-    public DocPayment Delete(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
+    public DocPayment delete(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         logger.info("UserId: {}. Class: {} Action: delete",  a.getName(), "DocPaymentControllers");
         return docPaymentService.deletePayment(payId);

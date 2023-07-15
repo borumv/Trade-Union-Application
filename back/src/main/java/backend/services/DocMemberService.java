@@ -15,12 +15,24 @@ public class DocMemberService {
     private DocTradeUnionRepo docRepo;
 
     public List<DocMember> getAllWhoNotFinished() {
+
         return docRepo.findDocMembersByLeaveDateIsNull();
     }
 
     public DocMember findByNum(int num) {
+
         return docRepo.findDocMemberByMembershipCard(num)
                 .orElseThrow(() -> new DocMemberNotFoundException(num));
 
+    }
+
+    public List<DocMember> findByPersonId(int id) {
+
+        return docRepo.findByPersonId(id);
+    }
+
+    public void deleteByPersonId(int id) {
+
+        docRepo.deleteByPersonId(id);
     }
 }
