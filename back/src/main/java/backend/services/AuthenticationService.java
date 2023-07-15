@@ -3,11 +3,10 @@ package backend.services;
 import backend.exceptions.ErrorNewPasswordException;
 import backend.exceptions.UserNameNotFoundException;
 import backend.persist.entity.User;
-import backend.persist.models.UserModel;
 import backend.persist.repositories.PermoRepo;
 import backend.persist.repositories.UserRepo;
 import backend.requests.AuthenticationRequest;
-import backend.requests.ChangePasswordRequestr;
+import backend.requests.ChangePasswordRequest;
 import backend.requests.RegisterRequest;
 import backend.security.AuthenticationException;
 import backend.security.JwtTokenProvider;
@@ -100,12 +99,12 @@ public class AuthenticationService {
         userRepo.save(user);
     }
 
-    public void changePassword(ChangePasswordRequestr changePasswordRequestr) {
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
 
-        User user = userRepo.findByEmail(changePasswordRequestr.getEmail())
-                .orElseThrow(() -> new UserNameNotFoundException(changePasswordRequestr.getEmail()));
-        if (changePasswordRequestr.getActualPassword().equals(user.getPassword())) {
-            user.setPassword(changePasswordRequestr.getNewPassword());
+        User user = userRepo.findByEmail(changePasswordRequest.getEmail())
+                .orElseThrow(() -> new UserNameNotFoundException(changePasswordRequest.getEmail()));
+        if (changePasswordRequest.getActualPassword().equals(user.getPassword())) {
+            user.setPassword(changePasswordRequest.getNewPassword());
             userRepo.save(user);
         } else {
             throw new ErrorNewPasswordException("Password not concur");

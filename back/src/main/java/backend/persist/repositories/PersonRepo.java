@@ -17,6 +17,7 @@ public interface PersonRepo extends PagingAndSortingRepository<PersonEntity,Inte
 
     List<PersonEntity> findAll();
     List<PersonEntity> findByFirstNameStartsWith(String firstNameStart, Pageable pageable);
+    List<PersonEntity> findByFirstNameStartsWith(String firstNameStart);
     List <PersonEntity> findAllByEducation(String education);
 
     @Query(value = "SELECT\n" +

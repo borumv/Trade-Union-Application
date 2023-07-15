@@ -10,11 +10,12 @@ import java.util.List;
 
 @Service
 public class PermissionService {
+
     @Autowired
     PermoRepo permoRepo;
 
-
     public List<Permission> getPermission(Role role) {
+
         return permoRepo.findPermissionsByRole(role);
     }
 }

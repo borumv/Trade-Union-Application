@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,6 +25,7 @@ import java.util.List;
         entities=@EntityResult(entityClass=PersonEntity.class))
 //@NotNullIfAnotherFieldHasValue
 //@Validated
+
 public class PersonEntity implements FirstSecondFieldInterface {
 
     @Id
@@ -122,6 +124,46 @@ public class PersonEntity implements FirstSecondFieldInterface {
                 ", education='" + education + '\'' +
                 '}';
     }
+
+    public PersonEntity() {
+
+
+    }
+
+    @Builder
+    public PersonEntity(int id, String firstName,
+                        String lastName, String patronymic,
+                        Date birth, String education,
+                        String address, String phoneNumber,
+                        String birthPlace, String livePlace,
+                        String regPlace, int maritalPersonId,
+                        String citizenShip, String nationality,
+                        String comment, Timestamp update,
+                        List<DocMember> docMembers,
+                        List<WorkPlace> workPlaces,
+                        List<DocPayment> docPayments) {
+
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.birth = birth;
+        this.education = education;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.birthPlace = birthPlace;
+        this.livePlace = livePlace;
+        this.regPlace = regPlace;
+        this.maritalPersonId = maritalPersonId;
+        this.citizenShip = citizenShip;
+        this.nationality = nationality;
+        this.comment = comment;
+        this.update = update;
+        this.docMembers = docMembers;
+        this.workPlaces = workPlaces;
+        this.docPayments = docPayments;
+    }
+
 }
 
 

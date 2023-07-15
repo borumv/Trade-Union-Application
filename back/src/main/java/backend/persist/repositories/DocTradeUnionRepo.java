@@ -10,6 +10,9 @@ import java.util.Optional;
 
 public interface DocTradeUnionRepo extends CrudRepository<DocMember,Integer> {
 //    public DocMember findDocTradeUnionByPerson(PersonEntity personEntity);
-List<DocMember> findDocMembersByLeaveDateIsNull();
+    List<DocMember> findDocMembersByLeaveDateIsNull();
     Optional<DocMember> findDocMemberByMembershipCard(int num);
+
+    List<DocMember> findByPersonId(int id);
+    void deleteByPersonId(int id);
 }

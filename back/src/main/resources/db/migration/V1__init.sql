@@ -6,7 +6,7 @@ CREATE SEQUENCE class_education_seq
     INCREMENT 1
     MINVALUE  1
     MAXVALUE 9223372036854775807
-    START 100
+    START WITH 100
     CACHE 1;
 
 -- ----------------------------
@@ -46,7 +46,7 @@ CREATE SEQUENCE org_seq
     INCREMENT 1
     MINVALUE  2
     MAXVALUE 9223372036854775807
-    START 2
+    START WITH 3
     CACHE 1;
 -- ----------------------------
 -- Table structure for class_org
@@ -75,7 +75,7 @@ CREATE SEQUENCE job_id_seq
     INCREMENT 1
     MINVALUE  1
     MAXVALUE 9223372036854775807
-    START 1
+    START WITH 1
     CACHE 1;
 
 -- ----------------------------
@@ -108,7 +108,7 @@ CREATE SEQUENCE users_id_seq
     INCREMENT 1
     MINVALUE  1
     MAXVALUE 9223372036854775807
-    START 1
+    START WITH 1
     CACHE 1;
 
 -- ----------------------------
