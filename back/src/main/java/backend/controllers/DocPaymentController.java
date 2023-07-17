@@ -3,7 +3,7 @@ package backend.controllers;
 
 import backend.persist.entity.DocPayment;
 import backend.persist.models.DocPaymentModel;
-import backend.persist.models.QuantityPayTradeUnion;
+import backend.persist.entity.QuantityPayTradeUnion;
 import backend.services.DocPaymentService;
 import jakarta.validation.constraints.Min;
 import org.slf4j.Logger;
