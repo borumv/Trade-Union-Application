@@ -1,7 +1,4 @@
-/**
- * The DocPaymentController class handles requests related to document payments.
- * It provides endpoints for retrieving, deleting, and updating document payment information.
- */
+
 package backend.controllers;
 
 import backend.persist.entity.DocPayment;
@@ -20,6 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The DocPaymentController class handles requests related to document payments.
+ * It provides endpoints for retrieving, deleting, and updating document payment information.
+ *
+ * @author Boris Vlasevsky
+ */
 @RestController
 @RequestMapping("/api/docpayments")
 @CrossOrigin(origins = {"http://localhost:3000"})

@@ -13,6 +13,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * Represents a document payment entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "doc_payment")

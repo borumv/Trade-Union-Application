@@ -5,13 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
 import java.sql.Timestamp;
 
+/**
+ * Represents a trade union entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "class_org")
 @NotNullIfAnotherFieldHasValue
-public class TradeUnion{
+public class TradeUnion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +38,13 @@ public class TradeUnion{
 
     @JsonIgnore
     public String getFirstField() {
+
         return address;
     }
+
     @JsonIgnore
     public String getSecondField() {
+
         return city;
     }
 }

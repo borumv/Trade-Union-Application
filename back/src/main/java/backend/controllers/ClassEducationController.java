@@ -1,7 +1,4 @@
-/**
- * The ClassEducationController class handles requests related to class education.
- * It provides endpoints for retrieving class education information and managing class participants.
- */
+
 package backend.controllers;
 
 import backend.persist.entity.ClassEducation;
@@ -22,6 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The ClassEducationController class handles requests related to class education.
+ * It provides endpoints for retrieving class education information and managing class participants.
+ *
+ * @author Boris Vlasevsky
+ */
 @RestController
 @RequestMapping("/api/education")
 @Validated

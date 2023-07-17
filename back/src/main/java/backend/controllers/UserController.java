@@ -30,6 +30,8 @@ import java.util.Map;
  * The UserController class handles requests related to users.
  * <p>
  * It provides endpoints for retrieving user information, changing passwords, and managing permissions.
+ *
+ * @author Boris Vlasevsky
  */
 @RestController
 @Validated

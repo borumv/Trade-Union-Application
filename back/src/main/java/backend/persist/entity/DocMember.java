@@ -11,6 +11,11 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * Represents a document member entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "doc_member")
@@ -48,6 +53,5 @@ public class DocMember {
     @Column(name = "person_id")
     @JsonProperty("person_id")
     private int personId;
-
 
 }

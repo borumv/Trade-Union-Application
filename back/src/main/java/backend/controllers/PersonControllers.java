@@ -1,7 +1,4 @@
-/**
- * The PersonControllers class handles requests related to persons.
- * It provides endpoints for retrieving, adding, updating, and deleting person information.
- */
+
 package backend.controllers;
 
 import backend.persist.entity.*;
@@ -25,6 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The PersonControllers class handles requests related to persons.
+ * It provides endpoints for retrieving, adding, updating, and deleting person information.
+ * @author Boris Vlasevsky
+ */
 @RestController
 @Validated
 @RequestMapping("/api/persons")

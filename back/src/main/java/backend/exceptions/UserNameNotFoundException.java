@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Exception class indicating that a specific user name or email was not found.
  * <p>
  * This exception is typically thrown when attempting to retrieve or manipulate a non-existent user based on their name or email.
+ *
+ * @author Boris Vlasevsky
  */
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class UserNameNotFoundException extends RuntimeException {

@@ -1,7 +1,3 @@
-/**
- * The DocMemberController class handles requests related to document members.
- * It provides endpoints for retrieving document member information.
- */
 
 package backend.controllers;
 
@@ -18,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The DocMemberController class handles requests related to document members.
+ * It provides endpoints for retrieving document member information.
+ *
+ * @author Boris Vlasevsky
+ */
 @RestController
 @RequestMapping("/api/union/docmember")
 @CrossOrigin(origins = {"http://localhost:3000"})

@@ -2,7 +2,6 @@
 package backend.controllers;
 
 import backend.persist.entity.DocPayment;
-import backend.persist.entity.PersonEntity;
 import backend.persist.entity.TradeUnion;
 import backend.persist.models.PersonModel;
 import backend.persist.models.TradeUnionModel;
@@ -23,7 +22,10 @@ import java.util.stream.Collectors;
 /**
  * The TradeUnionController class handles requests related to trade unions.
  * It provides endpoints for retrieving, adding, updating, and deleting trade union information.
+ *
+ * @author Boris Vlasevsky
  */
+
 @RestController
 @RequestMapping("/api/union")
 @CrossOrigin(origins = {"http://localhost:3000"})

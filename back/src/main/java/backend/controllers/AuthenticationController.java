@@ -1,6 +1,7 @@
 /**
  * The AuthenticationController class handles authentication and registration requests.
  * It is responsible for authenticating users, logging them out, and registering new users.
+ * @author Boris Vlasevsky
  */
 
 package backend.controllers;

@@ -4,6 +4,8 @@ package backend.exceptions;
  * Exception class indicating that a specific TradeUnion instance was not found.
  * <p>
  * This exception is typically thrown when attempting to retrieve or manipulate a non-existent TradeUnion object.
+ *
+ * @author Boris Vlasevsky
  */
 public class TradeUnionNotFoundException extends RuntimeException {
 

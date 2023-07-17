@@ -3,7 +3,9 @@ package backend.exceptions;
 /**
  * Exception class indicating that a specific DocPayment instance was not found.
  * <p>
- * This exception is typically thrown when attempting to retrieve or manipulate a non-existent DocPayment object.
+ * This exception is typically thrown when attempting to retrieve or manipulate a non-existent DocPayment object.]
+ *
+ * @author Boris Vlasevsky
  */
 public class DocPaymentNotFoundException extends RuntimeException {
 

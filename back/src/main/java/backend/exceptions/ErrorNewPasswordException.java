@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Exception class indicating an error with a new password.
  * <p>
  * This exception is typically thrown when there is an issue with a newly set password.
+ *
+ * @author Boris Vlasevsky
  */
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class ErrorNewPasswordException extends RuntimeException {
