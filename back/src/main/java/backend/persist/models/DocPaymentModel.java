@@ -1,7 +1,6 @@
 package backend.persist.models;
 
 import backend.persist.entity.DocPayment;
-import backend.persist.entity.PersonEntity;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +9,7 @@ import java.util.Date;
  * Model class representing a DocPayment.
  * <p>
  * This class is used to transfer data between different layers of the application.
+ *
  * @author Boris Vlasevsky
  */
 @Data

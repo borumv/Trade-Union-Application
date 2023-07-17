@@ -23,6 +23,8 @@ import java.util.function.Function;
 
 /**
  * JwtTokenProvider is a component that provides operations related to JWT tokens.
+ *
+ * @author Boris Vlasevsky
  */
 @Component
 public class JwtTokenProvider {

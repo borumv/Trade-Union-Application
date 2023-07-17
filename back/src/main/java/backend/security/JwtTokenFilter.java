@@ -19,6 +19,8 @@ import java.io.IOException;
 /**
  * JwtTokenFilter is a component that extends the GenericFilterBean class.
  * It filters and validates JWT tokens in the incoming requests.
+ *
+ * @author Boris Vlasevsky
  */
 @Component
 public class JwtTokenFilter extends GenericFilterBean {
