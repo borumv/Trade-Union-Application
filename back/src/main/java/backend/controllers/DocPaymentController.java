@@ -1,3 +1,7 @@
+/**
+ * The DocPaymentController class handles requests related to document payments.
+ * It provides endpoints for retrieving, deleting, and updating document payment information.
+ */
 package backend.controllers;
 
 import backend.persist.entity.DocPayment;
@@ -25,54 +29,96 @@ public class DocPaymentController {
     private DocPaymentService docPaymentService;
     Logger logger = LoggerFactory.getLogger(DocPaymentController.class);
 
+    /**
+     * Retrieves a list of all document payments.
+     *
+     * @return a list of DocPaymentModel objects representing the document payments.
+     */
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping()
-    public List<DocPaymentModel> getAll(){
+    public List<DocPaymentModel> getAll() {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getAll",  a.getName(), "DocPaymentController");
+        logger.info("UserId: {}. Class: {} Action: getAll", a.getName(), "DocPaymentController");
         return docPaymentService.getAll().stream().map(DocPaymentModel::toModel).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the document payment with the specified payment ID.
+     *
+     * @param payId the payment ID.
+     * @return a DocPayment object representing the document payment.
+     */
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{payId}")
-    public DocPayment getById(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
+    public DocPayment getById(
+            @PathVariable
+            @Min(value = 1, message = "{person.id.size.error}") int payId) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getById",  a.getName(), "DocPaymentControllers");
+        logger.info("UserId: {}. Class: {} Action: getById", a.getName(), "DocPaymentControllers");
         return docPaymentService.findById(payId);
     }
 
+    /**
+     * Deletes the document payment with the specified payment ID.
+     *
+     * @param payId the payment ID.
+     * @return a DocPayment object representing the deleted document payment.
+     */
     @PreAuthorize("hasAuthority('persons:read')")
     @DeleteMapping("/{payId}")
-    public DocPayment delete(@PathVariable @Min(value = 1, message = "{person.id.size.error}") int payId) {
+    public DocPayment delete(
+            @PathVariable
+            @Min(value = 1, message = "{person.id.size.error}") int payId) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: delete",  a.getName(), "DocPaymentControllers");
+        logger.info("UserId: {}. Class: {} Action: delete", a.getName(), "DocPaymentControllers");
         return docPaymentService.deletePayment(payId);
-//        return PersonModel.toModel(personEntity);
     }
 
+    /**
+     * Updates the document payment with the specified payment ID.
+     *
+     * @param payId the payment ID.
+     * @return a DocPayment object representing the updated document payment.
+     */
     @PreAuthorize("hasAuthority('persons:read')")
     @PutMapping("/{payId}")
-    public DocPayment update(@PathVariable int payId) {
+    public DocPayment update(
+            @PathVariable
+            int payId) {
 
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: update",  a.getName(), "DocPaymentControllers");
+        logger.info("UserId: {}. Class: {} Action: update", a.getName(), "DocPaymentControllers");
         return docPaymentService.update(payId);
-//        return PersonModel.toModel(personEntity);
     }
 
+    /**
+     * Retrieves the quantity of payments per trade union.
+     *
+     * @return a list of QuantityPayTradeUnion objects representing the payment counts per trade union.
+     */
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping("/count")
-    public List<QuantityPayTradeUnion> geQuantityPay(){
+    public List<QuantityPayTradeUnion> geQuantityPay() {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: geQuantityPay",  a.getName(), "DocPaymentController");
+        logger.info("UserId: {}. Class: {} Action: geQuantityPay", a.getName(), "DocPaymentController");
         return docPaymentService.getPayCountOfTradeUnion();
     }
 
+    /**
+     * Retrieves the quantity of payments that are not yet made per trade union.
+     *
+     * @return a list of QuantityPayTradeUnion objects representing the counts of unpaid payments per trade union.
+     */
     @PreAuthorize("hasAuthority('tradeunion:read')")
     @GetMapping("/count_statistic")
-    public List<QuantityPayTradeUnion> getCountNotPaied(){
+    public List<QuantityPayTradeUnion> getCountNotPaied() {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: getDontPaied",  a.getName(), "DocPaymentController");
+        logger.info("UserId: {}. Class: {} Action: getDontPaied", a.getName(), "DocPaymentController");
         return docPaymentService.getDontPaied();
     }
 

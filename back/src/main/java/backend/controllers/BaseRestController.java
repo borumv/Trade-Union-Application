@@ -1,3 +1,7 @@
+
+/*
+ The BaseRestController class includes a method for merging properties between objects.
+ */
 package backend.controllers;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
@@ -11,7 +15,12 @@ import java.lang.reflect.InvocationTargetException;
 
 public class BaseRestController {
 
-    public static final String OK_RESPONSE = "OK";
+    /**
+     * Handles RuntimeExceptions and returns a bad request response with the exception message.
+     *
+     * @param e the RuntimeException that occurred.
+     * @return the error message as a String.
+     */
     @ExceptionHandler({RuntimeException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -19,8 +28,7 @@ public class BaseRestController {
         return e.getMessage();
     }
 
-    private final BeanUtilsBean cloner = new BeanUtilsBean()
-    {
+    private final BeanUtilsBean cloner = new BeanUtilsBean() {
         @Override
         public void copyProperty(Object dest, String name, Object value) throws IllegalAccessException, InvocationTargetException {
             if (value != null)
@@ -28,6 +36,14 @@ public class BaseRestController {
         }
     };
 
+    /**
+     * Merges the properties from the source object to the target object.
+     * Only non-null properties are merged.
+     *
+     * @param target the target object to merge into.
+     * @param source the source object to merge from.
+     * @param <T>    the type of the objects being merged.
+     */
     public <T> void merge(T target, T source) {
         try {
             cloner.copyProperties(target, source);
