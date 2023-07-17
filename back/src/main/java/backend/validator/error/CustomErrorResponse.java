@@ -1,24 +1,25 @@
 package backend.validator.error;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.WebRequest;
 
-import java.time.LocalDateTime;
-
+/**
+ * CustomErrorResponse is a data class that represents a custom error response.
+ * <p>
+ * It contains information about the status, error, message, and path of the error.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @AllArgsConstructor
 @Builder
 public class CustomErrorResponse {
 
-    private int status;
-    private String error;
-    private String message;
-    private String path;
+    private int status; // The HTTP status code of the error response
+    private String error; // The error type or code
+    private String message; // The error message
+    private String path; // The path or URL where the error occurred
 
     public CustomErrorResponse() {
 
