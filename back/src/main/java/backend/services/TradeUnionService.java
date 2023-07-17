@@ -1,7 +1,7 @@
 package backend.services;
 
 import backend.controllers.BaseRestController;
-import backend.exceptions.TradeUnionNotFoundExeption;
+import backend.exceptions.TradeUnionNotFoundException;
 import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
 import backend.persist.entity.TradeUnion;
@@ -91,7 +91,7 @@ public class TradeUnionService extends BaseRestController {
 
     public TradeUnion getById(int id) {
 
-        return tradeUnionRepo.findById(id).orElseThrow(() -> new TradeUnionNotFoundExeption(id));
+        return tradeUnionRepo.findById(id).orElseThrow(() -> new TradeUnionNotFoundException(id));
     }
 
     public TradeUnion update(int id, TradeUnion tradeUnion) {
