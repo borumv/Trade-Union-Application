@@ -1,3 +1,4 @@
+
 package backend.controllers;
 
 import backend.persist.entity.DocMember;
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The DocMemberController class handles requests related to document members.
+ * It provides endpoints for retrieving document member information.
+ *
+ * @author Boris Vlasevsky
+ */
 @RestController
 @RequestMapping("/api/union/docmember")
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -22,19 +29,35 @@ public class DocMemberController {
     private DocMemberService docMemberService;
     Logger logger = LoggerFactory.getLogger(DocMemberController.class);
 
+    /**
+     * Retrieves a list of document members who have not finished their membership.
+     *
+     * @return a list of DocMember objects representing the active document members.
+     */
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/all")
-    public List<DocMember> findDocMembersByLeaveDateIsNull(){
+    public List<DocMember> findDocMembersByLeaveDateIsNull() {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: findDocMembersByLeaveDateIsNull",  a.getName(), "DocMemberController");
+        logger.info("UserId: {}. Class: {} Action: findDocMembersByLeaveDateIsNull", a.getName(), "DocMemberController");
         return docMemberService.getAllWhoNotFinished();
     }
 
+    /**
+     * Retrieves the document member with the specified document number.
+     *
+     * @param num the document number of the member.
+     * @return a DocMember object representing the document member.
+     */
     @PreAuthorize("hasAuthority('persons:read')")
     @GetMapping("/{num}")
-    public DocMember findByNum(@PathVariable @Min(1) int num){
+    public DocMember findByNum(
+            @PathVariable
+            @Min(1) int num) {
+
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: findByNum",  a.getName(), "DocMemberController");
+        logger.info("UserId: {}. Class: {} Action: findByNum", a.getName(), "DocMemberController");
         return docMemberService.findByNum(num);
     }
+
 }

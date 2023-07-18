@@ -7,10 +7,16 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Represents a permission entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "permissions")
 public class Permission {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -21,12 +27,12 @@ public class Permission {
     @JsonIgnore
     private Role role;
 
-    @Column (name = "resource")
+    @Column(name = "resource")
     private String resource;
-    @Column (name = "action")
+    @Column(name = "action")
     private String action;
     @Column(name = "permit")
-    private  boolean permit;
+    private boolean permit;
 
     @ManyToMany
     @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)

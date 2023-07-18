@@ -6,16 +6,30 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
+/**
+ * Model class representing a Person.
+ * <p>
+ * This class extends SlackPersonModel and includes additional attributes specific to a PersonEntity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
-public class PersonModel extends SlackPersonModel{
+@EqualsAndHashCode(callSuper = true)
+public class PersonModel extends SlackPersonModel {
 
     private int id;
     private String patronymic;
     private String education;
     private Date birth;
 
-    public static PersonModel toModel(PersonEntity personEntity){
+    /**
+     * Converts a PersonEntity object to a PersonModel object.
+     *
+     * @param personEntity the PersonEntity object to be converted
+     * @return the corresponding PersonModel object
+     */
+    public static PersonModel toModel(PersonEntity personEntity) {
+
         PersonModel personModel = new PersonModel();
         personModel.setEducation(personEntity.getEducation());
         personModel.setId(personEntity.getId());
@@ -24,6 +38,7 @@ public class PersonModel extends SlackPersonModel{
         personModel.setPatronymic(personEntity.getPatronymic());
         personModel.setBirth(personEntity.getBirth());
         return personModel;
-
     }
 }
+
+

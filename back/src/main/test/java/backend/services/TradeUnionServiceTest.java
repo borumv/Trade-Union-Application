@@ -1,5 +1,5 @@
 package backend.services;
-import backend.exceptions.TradeUnionNotFoundExeption;
+import backend.exceptions.TradeUnionNotFoundException;
 import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
 import backend.persist.entity.TradeUnion;
@@ -139,7 +139,7 @@ class TradeUnionServiceTest {
         int id = 1;
         when(tradeUnionRepo.findById(id)).thenReturn(java.util.Optional.empty());
 
-        assertThrows(TradeUnionNotFoundExeption.class, () -> tradeUnionService.getById(id));
+        assertThrows(TradeUnionNotFoundException.class, () -> tradeUnionService.getById(id));
     }
 
     @Test

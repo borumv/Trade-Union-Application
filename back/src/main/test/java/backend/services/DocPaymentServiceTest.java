@@ -1,10 +1,9 @@
 package backend.services;
 import backend.exceptions.DocPaymentNotFoundException;
 import backend.persist.entity.DocPayment;
-import backend.persist.models.QuantityPayTradeUnion;
+import backend.persist.entity.QuantityPayTradeUnion;
 import backend.persist.repositories.DocPaymentRepo;
 import backend.persist.repositories.QuantityPayment;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

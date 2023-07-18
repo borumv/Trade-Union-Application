@@ -1,4 +1,4 @@
-package backend.persist.models;
+package backend.persist.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

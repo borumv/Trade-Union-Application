@@ -10,8 +10,12 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ClassEducationRepo extends CrudRepository<ClassEducation, Integer> {
-
 //    ClassEducation findById(int educationTypeId);
 
-    List<ClassEducation>findAll();
+    /**
+     * Retrieves all ClassEducation objects from the repository.
+     *
+     * @return a list of all ClassEducation objects
+     */
+    List<ClassEducation> findAll();
 }

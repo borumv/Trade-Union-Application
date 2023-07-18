@@ -2,8 +2,6 @@ package backend.persist.entity;
 
 import backend.validator.classeducationValidator.ClassEducation;
 import backend.validator.personValidator.FirstSecondFieldInterface;
-import backend.validator.personValidator.NotNullIfAnotherFieldHasValue;
-import backend.validator.dateValidator.CustomDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,21 +9,25 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents a permission entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "person_main")
 @SqlResultSetMapping(
-        name="PersonMapping",
-        entities=@EntityResult(entityClass=PersonEntity.class))
+        name = "PersonMapping",
+        entities = @EntityResult(entityClass = PersonEntity.class)
+)
 //@NotNullIfAnotherFieldHasValue
 //@Validated
-
 public class PersonEntity implements FirstSecondFieldInterface {
 
     @Id
@@ -72,7 +74,6 @@ public class PersonEntity implements FirstSecondFieldInterface {
     private String regPlace;
 
     @Column(name = "marital_id")
-
     private int maritalPersonId;
 
     @Column(name = "citizenship")
@@ -106,17 +107,20 @@ public class PersonEntity implements FirstSecondFieldInterface {
     @Override
     @JsonIgnore
     public String getFirstField() {
+
         return livePlace;
     }
 
     @Override
     @JsonIgnore
     public String getSecondField() {
+
         return regPlace;
     }
 
     @Override
     public String toString() {
+
         return "PersonEntity{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -126,7 +130,6 @@ public class PersonEntity implements FirstSecondFieldInterface {
     }
 
     public PersonEntity() {
-
 
     }
 

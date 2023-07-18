@@ -27,6 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service class for authentication-related operations
+ *
+ * @author Boris Vlasevsky
+ */
+
 @Service
 @Slf4j
 public class AuthenticationService {
@@ -43,6 +49,13 @@ public class AuthenticationService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Constructs an AuthenticationService with the specified dependencies.
+     *
+     * @param manager          the AuthenticationManager
+     * @param passwordEncoder  the PasswordEncoder
+     * @param jwtTokenProvider the JwtTokenProvider
+     */
     public AuthenticationService(AuthenticationManager manager, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
 
         this.manager = manager;
@@ -50,7 +63,14 @@ public class AuthenticationService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public Map<Object, Object> authenticate(AuthenticationRequest request) {
+    /**
+     * Authenticates a user based on the provided AuthenticationRequest.
+     *
+     * @param request the AuthenticationRequest object
+     * @return a map containing the email and token of the authenticated user
+     * @throws AuthenticationException if authentication fails
+     */
+    public Map<Object, Object> authenticate(AuthenticationRequest request) throws AuthenticationException {
 
         try {
             manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -71,6 +91,12 @@ public class AuthenticationService {
         }
     }
 
+    /**
+     * Registers a user based on the provided RegisterRequest.
+     *
+     * @param request the RegisterRequest object
+     * @return a map containing the email and token of the registered user
+     */
     public Map<Object, Object> register(RegisterRequest request) {
 
         User registredUser = User.builder()
@@ -89,17 +115,36 @@ public class AuthenticationService {
         return response;
     }
 
-    public User findByEmail(String email) {
+    /**
+     * Retrieves a user by the specified email.
+     *
+     * @param email the email of the user
+     * @return the retrieved User object
+     * @throws UserNameNotFoundException if no user is found with the specified email
+     */
+    public User findByEmail(String email) throws UserNameNotFoundException {
 
         return userRepo.findByEmail(email).orElseThrow(() -> new UserNameNotFoundException("not found with email this - " + email));
     }
 
+    /**
+     * Saves a user.
+     *
+     * @param user the User object to be saved
+     */
     public void save(User user) {
 
         userRepo.save(user);
     }
 
-    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+    /**
+     * Changes the password of a user based on the provided ChangePasswordRequest.
+     *
+     * @param changePasswordRequest the ChangePasswordRequest object
+     * @throws UserNameNotFoundException if no user is found with the specified email
+     * @throws ErrorNewPasswordException if the actual password does not match the user's current password
+     */
+    public void changePassword(ChangePasswordRequest changePasswordRequest) throws UserNameNotFoundException, ErrorNewPasswordException {
 
         User user = userRepo.findByEmail(changePasswordRequest.getEmail())
                 .orElseThrow(() -> new UserNameNotFoundException(changePasswordRequest.getEmail()));
@@ -110,5 +155,4 @@ public class AuthenticationService {
             throw new ErrorNewPasswordException("Password not concur");
         }
     }
-
 }

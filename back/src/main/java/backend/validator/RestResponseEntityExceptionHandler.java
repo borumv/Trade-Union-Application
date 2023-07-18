@@ -2,27 +2,19 @@ package backend.validator;
 
 import backend.exceptions.*;
 import backend.security.AuthenticationException;
-import backend.security.UserDetailsServiceImpl;
 import backend.validator.error.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,7 +51,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             ClassEducationNotFoundException.class,
             DocMemberNotFoundException.class,
             WorkPlaceNotFoundException.class,
-            TradeUnionNotFoundExeption.class,
+            TradeUnionNotFoundException.class,
             UserNameNotFoundException.class,
             ErrorNewPasswordException.class,}
     )

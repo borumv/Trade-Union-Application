@@ -10,7 +10,6 @@ import java.util.Arrays;
 @Getter
 public class RestException extends RuntimeException {
 
-
     private static final long serialVersionUID = 4L;
 
     private Object[] args;
@@ -18,6 +17,7 @@ public class RestException extends RuntimeException {
     private HttpStatus httpStatus;
 
     public Object[] getArgs() {
+
         return this.args = Arrays.copyOf(args, args.length);
     }
 
