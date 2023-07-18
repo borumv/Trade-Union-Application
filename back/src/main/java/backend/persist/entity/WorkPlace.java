@@ -10,7 +10,11 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.Date;
 
-
+/**
+ * Represents a workplace entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "doc_job")
@@ -46,17 +50,19 @@ public class WorkPlace implements FirstSecondFieldInterface {
 
     @Override
     public String getFirstField() {
+
         return profession;
     }
 
     @Override
     public String getSecondField() {
+
         return nameWokPlace;
     }
 
-
     @Override
     public String toString() {
+
         return "WorkPlace{" +
                 "nameWokPlace='" + nameWokPlace + '\'' +
                 ", profession='" + profession + '\'' +

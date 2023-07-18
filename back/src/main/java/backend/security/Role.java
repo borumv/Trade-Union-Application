@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 /**
  * The Role enum represents different roles in the system.
  * Each role is associated with a set of permissions.
+ *
+ * @author Boris Vlasevsky
  */
 public enum Role {
     ADMIN(Stream.of(Permissions.PERSONS_READ, Permissions.PERSONS_WRITE, Permissions.PERSONS_DELETE, Permissions.TRADEUNION_READ,
@@ -23,6 +25,7 @@ public enum Role {
      * @param permissions the set of permissions associated with the role
      */
     Role(Set<Permissions> permissions) {
+
         this.permissions = permissions;
     }
 
@@ -32,9 +35,9 @@ public enum Role {
      * @return the set of permissions
      */
     public Set<Permissions> getPermissions() {
+
         return permissions;
     }
-
 
     /**
      * Retrieves the authorities (SimpleGrantedAuthority) associated with the role.
@@ -43,6 +46,7 @@ public enum Role {
      * @return the set of authorities
      */
     public Set<SimpleGrantedAuthority> getAuthorities() {
+
         return getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());

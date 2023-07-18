@@ -11,10 +11,16 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Represents a user entity.
+ *
+ * @author Boris Vlasevsky
+ */
 @Data
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -45,13 +51,16 @@ public class User {
 
     @ManyToMany
     @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)
+    @JsonIgnore
     private List<Permission> permissionList;
 
     public User() {
 
     }
+
     @Builder
     public User(Long id, String email, String firstName, String lastName, String password, Role role, Status status, List<Permission> permissionList) {
+
         this.id = id;
         this.email = email;
         this.firstName = firstName;

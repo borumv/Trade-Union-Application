@@ -6,15 +6,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
 /**
  * AuthEntryPointJwt is a component that implements the AuthenticationEntryPoint interface.
  * It handles unauthorized access and sends an error response.
+ *
+ * @author Boris Vlasevsky
  */
 @Component
 @Slf4j
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+
     /**
      * Called when a user attempts to access a secured resource without proper authentication.
      * Sends an unauthorized error response with an appropriate message.
@@ -28,6 +32,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,
                          AuthenticationException e) throws IOException {
+
         log.error("Unauthorized error in commence method in AuthEntryPointJwt: {}" + e.getMessage());
         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }

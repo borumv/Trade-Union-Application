@@ -3,6 +3,8 @@ package backend.security;
 /**
  * The Permissions enum represents different types of permissions in a system.
  * Each permission is associated with a specific string value.
+ *
+ * @author Boris Vlasevsky
  */
 public enum Permissions {
     PERSONS_READ("persons:read"),

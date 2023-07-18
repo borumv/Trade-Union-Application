@@ -1,8 +1,7 @@
 package backend.services;
 
-
 import backend.controllers.BaseRestController;
-import backend.exceptions.TradeUnionNotFoundExeption;
+import backend.exceptions.TradeUnionNotFoundException;
 import backend.persist.entity.DocPayment;
 import backend.persist.entity.PersonEntity;
 import backend.persist.entity.TradeUnion;
@@ -16,89 +15,97 @@ import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class TradeUnionService extends BaseRestController {
 
-//    @Autowired
-//    @Qualifier("beforeCreateTradeUnionValidator")
-//    private TradeUnionValidator validator;
-//
-//    @InitBinder
-//    protected void initBinder(WebDataBinder binder) {
-//        binder.setValidator(validator);
-//    }
-
     @Autowired
     TradeUnionRepo tradeUnionRepo;
+
     @Autowired
     PersonRepo personRepo;
+
     @Autowired
     DocTradeUnionRepo docTradeUnionRepo;
 
     @PersistenceContext
     private EntityManager em;
 
-    public List<DocPayment> getAllDocPayments(int unionId){
+    /**
+     * Retrieves a list of DocPayment objects for a trade union.
+     *
+     * @param unionId the ID of the trade union
+     * @return a list of DocPayment objects
+     */
+    public List<DocPayment> getAllDocPayments(int unionId) {
+
         Query q = em.createNativeQuery("SELECT\n" +
-                "\tdoc_payment.*\n" +
-                "FROM\n" +
-                "\tdoc_payment\n" +
-                "WHERE\n" +
-                "\tdoc_payment.org_id = ?1", "DocPaymentMapping");
-        q.setParameter(1,unionId);
+                                               "\tdoc_payment.*\n" +
+                                               "FROM\n" +
+                                               "\tdoc_payment\n" +
+                                               "WHERE\n" +
+                                               "\tdoc_payment.org_id = ?1", "DocPaymentMapping");
+        q.setParameter(1, unionId);
         return q.getResultList();
     }
 
-    public List<PersonEntity> getAllActiveMembers(int unionId, Pageable pageable){
-//
-//        Query q = em.createNativeQuery("SELECT\n" +
-//                "\tperson_main.* \n" +
-//                "FROM\n" +
-//                "\tperson_main\n" +
-//                "\tINNER JOIN doc_member ON person_main.\"id\" = doc_member.person_id \n" +
-//                "WHERE\n" +
-//                "\t( doc_member.completed IS NOT NULL AND doc_member.org_id = ?1 ) \n" +
-//                "ORDER BY\n" +
-//                "\tdoc_member.created \\pageable\\", "PersonMapping");
-//        q.setParameter(1,unionId);
-//        return q.getResultList();
-       return personRepo.getAllActiveMembers(unionId, pageable);
+    /**
+     * Retrieves a paginated list of active members for a trade union.
+     *
+     * @param unionId  the ID of the trade union
+     * @param pageable the pageable object specifying the page number and size
+     * @return a list of active members
+     */
+    public List<PersonEntity> getAllActiveMembers(int unionId, Pageable pageable) {
 
+        return personRepo.getAllActiveMembers(unionId, pageable);
     }
 
-    public List<PersonEntity> getAllActiveWithoutPageable(int unionId){
-//
-//        Query q = em.createNativeQuery("SELECT\n" +
-//                "\tperson_main.* \n" +
-//                "FROM\n" +
-//                "\tperson_main\n" +
-//                "\tINNER JOIN doc_member ON person_main.\"id\" = doc_member.person_id \n" +
-//                "WHERE\n" +
-//                "\t( doc_member.completed IS NOT NULL AND doc_member.org_id = ?1 ) \n" +
-//                "ORDER BY\n" +
-//                "\tdoc_member.created \\pageable\\", "PersonMapping");
-//        q.setParameter(1,unionId);
-//        return q.getResultList();
+    /**
+     * Retrieves a list of all active members for a trade union without pagination.
+     *
+     * @param unionId the ID of the trade union
+     * @return a list of active members
+     */
+    public List<PersonEntity> getAllActiveWithoutPageable(int unionId) {
+
         return personRepo.getAllActiveWithoutPageable(unionId);
-
     }
 
-    public List<TradeUnionModel> getAllTradeUnions(){
+    /**
+     * Retrieves a list of all trade unions.
+     *
+     * @return a list of trade union models
+     */
+    public List<TradeUnionModel> getAllTradeUnions() {
+
         List<TradeUnion> list = tradeUnionRepo.findAll();
         return list.stream().map(TradeUnionModel::toModel).collect(Collectors.toList());
     }
 
-    public List<TradeUnion> getAllNaturalTradeUnions(){
+    /**
+     * Retrieves a list of all natural trade unions.
+     *
+     * @return a list of trade unions
+     */
+    public List<TradeUnion> getAllNaturalTradeUnions() {
+
         return tradeUnionRepo.findAll();
     }
 
-    public TradeUnion createTradeUnion(TradeUnionModel model){
+    /**
+     * Creates a new trade union.
+     *
+     * @param model the trade union model containing the details of the trade union to create
+     * @return the created trade union
+     */
+    public TradeUnion createTradeUnion(TradeUnionModel model) {
+
         TradeUnion tradeUnion = new TradeUnion();
         tradeUnion.setNameUnion(model.getNameUnion());
         tradeUnion.setAddress(model.getAddress());
@@ -106,21 +113,46 @@ public class TradeUnionService extends BaseRestController {
         tradeUnion.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return tradeUnionRepo.save(tradeUnion);
     }
-    public TradeUnion deleteTradeUnion(int id){
+
+    /**
+     * Deletes a trade union with the specified ID.
+     *
+     * @param id the ID of the trade union to delete
+     * @return the deleted trade union
+     */
+    public TradeUnion deleteTradeUnion(int id) {
+
         TradeUnion tradeUnion = new TradeUnion();
         tradeUnionRepo.deleteById(id);
         return tradeUnion;
     }
 
-    public TradeUnion getById(int id){
-        return tradeUnionRepo.findById(id).orElseThrow( () -> new TradeUnionNotFoundExeption(id));
+    /**
+     * Retrieves a trade union by ID.
+     *
+     * @param id the ID of the trade union to retrieve
+     * @return the retrieved trade union
+     * @throws TradeUnionNotFoundException if no trade union is found with the specified ID
+     */
+    public TradeUnion getById(int id) throws TradeUnionNotFoundException {
+
+        return tradeUnionRepo.findById(id).orElseThrow(() -> new TradeUnionNotFoundException(id));
     }
 
-    public TradeUnion update(int id, TradeUnion tradeUnion){
+    /**
+     * Updates the details of a trade union.
+     *
+     * @param id         the ID of the trade union to update
+     * @param tradeUnion the updated trade union details
+     * @return the updated trade union
+     */
+    public TradeUnion update(int id, TradeUnion tradeUnion) {
+
         TradeUnion tradeUnion1 = getById(id);
         merge(tradeUnion1, tradeUnion);
         tradeUnion1.setId(id);
         tradeUnion1.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        return  tradeUnionRepo.save(tradeUnion1);
+        return tradeUnionRepo.save(tradeUnion1);
     }
+
 }

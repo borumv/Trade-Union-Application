@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 /**
  * UserDetailsServiceImpl is a service class that implements the UserDetailsService interface.
  * It provides user-related operations for authentication and authorization.
+ *
+ * @author Boris Vlasevsky
  */
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {

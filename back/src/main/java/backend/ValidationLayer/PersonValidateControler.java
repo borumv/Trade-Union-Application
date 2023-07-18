@@ -10,13 +10,21 @@ import org.springframework.validation.annotation.Validated;
 @Service
 @Validated
 public class PersonValidateControler {
+
     @Autowired
     private PersonRepo personRepo;
 
-
+    /**
+     * Updates a person entity.
+     *
+     * @param personEntity the person entity to update
+     * @return the updated person entity
+     */
     public PersonEntity update(@Valid PersonEntity personEntity) {
+
         return personRepo.save(personEntity);
     }
+
 }
 
 

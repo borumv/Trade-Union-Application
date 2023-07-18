@@ -1,7 +1,6 @@
 package backend.services;
 
 import backend.exceptions.WorkPlaceNotFoundException;
-import backend.persist.entity.PersonEntity;
 import backend.persist.entity.WorkPlace;
 import backend.persist.repositories.WorkPlaceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +10,30 @@ import java.util.List;
 
 @Service
 public class WorkPlaceService {
+
     @Autowired
     WorkPlaceRepo workPlaceRepo;
-    public List<WorkPlace> getAllWorkPlace(){
+
+    /**
+     * Retrieves all work places.
+     *
+     * @return the list of all work places
+     */
+    public List<WorkPlace> getAllWorkPlace() {
+
         return workPlaceRepo.findAll();
     }
-    public WorkPlace getById(int id){
-        return workPlaceRepo.findById(id).orElseThrow(()->new WorkPlaceNotFoundException(id));
+
+    /**
+     * Retrieves a work place by ID.
+     *
+     * @param id the ID of the work place to retrieve
+     * @return the found work place
+     * @throws WorkPlaceNotFoundException if no work place is found with the specified ID
+     */
+    public WorkPlace getById(int id) throws WorkPlaceNotFoundException {
+
+        return workPlaceRepo.findById(id).orElseThrow(() -> new WorkPlaceNotFoundException(id));
     }
 
-//    public PersonEntity getWorkPeople(int placeId){
-//        WorkPlace workPlace = workPlaceRepo.findById(placeId);
-//        return workPlace.getPerson();
-//    }
 }

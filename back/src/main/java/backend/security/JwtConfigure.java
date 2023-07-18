@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 /**
  * JwtConfigure is a component that extends the SecurityConfigurerAdapter class.
  * It configures the JwtTokenFilter to be applied before the UsernamePasswordAuthenticationFilter in the HttpSecurity.
+ *
+ * @author Boris Vlasevsky
  */
 @Component
 @Slf4j
@@ -23,6 +25,7 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
      * @param jwtTokenFilter the JwtTokenFilter to be configured
      */
     public JwtConfigure(JwtTokenFilter jwtTokenFilter) {
+
         this.jwtTokenFilter = jwtTokenFilter;
     }
 
@@ -33,6 +36,7 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
      */
     @Override
     public void configure(HttpSecurity httpSecurity) {
+
         log.info("method method call in JwtConfigure call" + httpSecurity.toString());
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
