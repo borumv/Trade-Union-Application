@@ -2,6 +2,7 @@ package backend.services;
 
 import backend.exceptions.ErrorNewPasswordException;
 import backend.exceptions.UserNameNotFoundException;
+import backend.persist.entity.RefreshToken;
 import backend.persist.entity.User;
 import backend.persist.repositories.PermoRepo;
 import backend.persist.repositories.UserRepo;
@@ -19,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,19 +52,27 @@ public class AuthenticationService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final RefreshTokenService refreshTokenService;
+
+
+
     /**
      * Constructs an AuthenticationService with the specified dependencies.
      *
-     * @param manager          the AuthenticationManager
-     * @param passwordEncoder  the PasswordEncoder
-     * @param jwtTokenProvider the JwtTokenProvider
+     * @param manager             the AuthenticationManager
+     * @param passwordEncoder     the PasswordEncoder
+     * @param jwtTokenProvider    the JwtTokenProvider
+     * @param refreshTokenService the RefreshToken
      */
-    public AuthenticationService(AuthenticationManager manager, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public AuthenticationService(AuthenticationManager manager, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, RefreshTokenService refreshTokenService) {
 
         this.manager = manager;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.refreshTokenService = refreshTokenService;
     }
+
+
 
     /**
      * Authenticates a user based on the provided AuthenticationRequest.
@@ -70,14 +81,17 @@ public class AuthenticationService {
      * @return a map containing the email and token of the authenticated user
      * @throws AuthenticationException if authentication fails
      */
+    @Transactional
     public Map<Object, Object> authenticate(AuthenticationRequest request) throws AuthenticationException {
 
         try {
             manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             String token = jwtTokenProvider.createToken(request.getEmail());
+            var refreshToken = refreshTokenService.createRefreshToken(request.getEmail());
             Map<Object, Object> response = new HashMap<>();
             response.put("email", request.getEmail());
             response.put("token", token);
+            response.put("refresh_token", refreshToken.getToken());
             log.info("UserId: {}. Authenticate", request.getEmail());
             return response;
         } catch (org.springframework.security.core.AuthenticationException e) {
@@ -154,5 +168,9 @@ public class AuthenticationService {
         } else {
             throw new ErrorNewPasswordException("Password not concur");
         }
+    }
+
+    public String generateTokenByUserName(String name){
+        return jwtTokenProvider.createToken(name);
     }
 }

@@ -1,16 +1,23 @@
 /**
  * The AuthenticationController class handles authentication and registration requests.
  * It is responsible for authenticating users, logging them out, and registering new users.
+ *
  * @author Boris Vlasevsky
  */
 
 package backend.controllers;
 
+import backend.exceptions.TokenRefreshException;
+import backend.persist.entity.RefreshToken;
+import backend.persist.models.TokenRefreshResponse;
 import backend.requests.AuthenticationRequest;
 import backend.requests.RegisterRequest;
+import backend.security.TokenRefreshRequest;
 import backend.services.AuthenticationService;
+import backend.services.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,19 +28,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @Slf4j
 @Validated
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final RefreshTokenService refreshTokenService;
 
     /**
      * Constructs a new AuthenticationController with the specified AuthenticationService.
      *
      * @param authenticationService the AuthenticationService used for authentication and registration.
+     * @param refreshTokenService
      */
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, RefreshTokenService refreshTokenService) {
+
 
         this.authenticationService = authenticationService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     /**
@@ -75,5 +86,23 @@ public class AuthenticationController {
             RegisterRequest request) {
 
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid
+                                          @RequestBody
+                                          TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = authenticationService.generateTokenByUserName(user.getEmail());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                                                             "Refresh token is not in database!"));
     }
 }
