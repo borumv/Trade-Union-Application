@@ -206,9 +206,11 @@ https://github.com/borumv/Trade-Union-Application/assets/86356857/ef535d4b-da69-
 #### Different view with different roles
 
 **Admin**
+
 https://github.com/borumv/Trade-Union-Application/assets/86356857/1ca64a47-31a6-40c5-9b98-6915e427f707
 
 **User**
+
 https://github.com/borumv/Trade-Union-Application/assets/86356857/3e51d4ba-407c-4b50-90ea-bf4c9c06c85c
 
 #### CRUD operations & Validation
