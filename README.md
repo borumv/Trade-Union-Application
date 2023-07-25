@@ -186,17 +186,37 @@ The frontend server will be running at `http://localhost:3000`.
 ## User Interface Overview
 
 
-In this section, we provide an overview of the user interface of our application. Below are some screenshots and videos showcasing different pages and functionalities.
+In this section, I provide an overview of the user interface of our application. Below are some screenshots and videos showcasing different pages and functionalities.
 
 ### Authorization
 
-#### Login page
+#### Login page with validation
+
+
+https://github.com/borumv/Trade-Union-Application/assets/86356857/fc1170dd-a536-44aa-8be2-fa2084613fbd
 
 #### Register page
 
+
+https://github.com/borumv/Trade-Union-Application/assets/86356857/ef535d4b-da69-4427-ac6d-73b8d6288e61
+
+
 ### Working with tables
 
-#### CRUD operations
+#### Different view with different roles
 
-#### Validation logics
+**Admin**
+
+https://github.com/borumv/Trade-Union-Application/assets/86356857/1ca64a47-31a6-40c5-9b98-6915e427f707
+
+**User**
+
+https://github.com/borumv/Trade-Union-Application/assets/86356857/3e51d4ba-407c-4b50-90ea-bf4c9c06c85c
+
+#### CRUD operations & Validation
+
+https://github.com/borumv/Trade-Union-Application/assets/86356857/39f6c327-7d6f-4a68-ae7f-3d70cfb3bf2e
+
+
+
 
