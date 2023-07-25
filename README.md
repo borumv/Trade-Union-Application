@@ -7,14 +7,14 @@ A comprehensive full-stack web application built using Spring Boot for the backe
 ## Table of Contents
 - [Project Overview](#overview)
 - [Features](#features)
-- [Technologies Used](#Technologies%20Used)
-- [Project Roadmap and Issues](#Project%20Roadmap%20and%20Issues)
-- [Getting Started](#getting%20started)
+- [Technologies Used](#technologies used)
+- [Project Roadmap and Issues](#Project Roadmap and Issues)
+- [Getting Started](#getting started)
     - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Running the Application](#Running%20the%20Application)
+    - [Running the Application](#Running the Application)
 - [API Documentation](#api-documentation)
-- [User Interface Overview](#user%20interface%20overview)
+- [User Interface Overview](#user interface overview)
 
 ## Features
 - User authentication and authorization. With different roles and permissions (the same Roles can have different permissions)
