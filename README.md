@@ -7,12 +7,12 @@ A comprehensive full-stack web application built using Spring Boot for the backe
 ## Table of Contents
 - [Project Overview](#overview)
 - [Features](#features)
-- [Technologies Used](#technologies%20used)
-- [Project Roadmap and Issues](#Project%20Roadmap%20and%20issues)
-- [Getting Started](##getting%20started)
+- [Technologies Used](#Technologies%20Used)
+- [Project Roadmap and Issues](#Project%20Roadmap%20and%20Issues)
+- [Getting Started](#getting%20started)
     - [Installation](#installation)
     - [Configuration](#configuration)
-    - [Start Application](#running%20the%20application)
+    - [Running the Application](#Running%20the%20Application)
 - [API Documentation](#api-documentation)
 - [User Interface Overview](#user%20interface%20overview)
 
