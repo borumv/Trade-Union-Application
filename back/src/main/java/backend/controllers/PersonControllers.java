@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @RestController
 @Validated
 @RequestMapping("/api/persons")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class PersonControllers {
 
     @Autowired

@@ -34,6 +34,8 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
                          AuthenticationException e) throws IOException {
 
         log.error("Unauthorized error in commence method in AuthEntryPointJwt: {}" + e.getMessage());
-        httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpServletResponse.getOutputStream().println("{ \"error\": \"" + e.getMessage() + "\" }");
     }
 }

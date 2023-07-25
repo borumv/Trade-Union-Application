@@ -1,8 +1,13 @@
-package backend.validator;
+package backend;
 
 import backend.exceptions.*;
 import backend.security.AuthenticationException;
+import backend.validator.MainCustomErrorResponse;
+import backend.validator.ValidationProblem;
 import backend.validator.error.*;
+import ch.qos.logback.core.spi.ErrorCodes;
+import io.jsonwebtoken.ClaimJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -16,7 +21,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
@@ -28,11 +32,37 @@ import java.util.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+    Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
-    @ExceptionHandler(AuthenticationException.class)
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(TokenRefreshException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public CustomErrorResponse handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
+        return CustomErrorResponse.builder()
+                .status(403)
+                .error(request.getDescription(true)).build();
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public CustomErrorResponse handleTokenRefreshException(ExpiredJwtException ex, WebRequest request) {
+        return CustomErrorResponse.builder()
+                .message(ex.getMessage())
+                .status(403)
+                .error(request.getDescription(true)).build();
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(ClaimJwtException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public CustomErrorResponse handleTokenRefreshException(ClaimJwtException ex, WebRequest request) {
+        return CustomErrorResponse.builder()
+                .message(ex.getMessage())
+                .path("token expiration")
+                .status(403)
+                .error("JWT expired Error").build();
+    }
+    @org.springframework.web.bind.annotation.ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<List<CustomErrorResponse>> authenticationException(AuthenticationException a) {
         List<CustomErrorResponse> customErrorResponses = new ArrayList<>();
         a.getErrors()
@@ -47,7 +77,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(customErrorResponses, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({PersonNotFoundException.class,
+    @org.springframework.web.bind.annotation.ExceptionHandler({PersonNotFoundException.class,
             ClassEducationNotFoundException.class,
             DocMemberNotFoundException.class,
             WorkPlaceNotFoundException.class,
@@ -66,7 +96,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     public ValidationProblem onConstraintValidationException(ConstraintViolationException e, Principal principal) {

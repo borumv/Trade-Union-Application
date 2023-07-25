@@ -19,7 +19,7 @@ public class CustomHandlerExceptionResolver implements HandlerExceptionResolver 
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         if (ex instanceof ExpiredJwtException) {
             // Отправляем пользователю сообщение об ошибке с информацией о просроченном токене
-            sendErrorResponse(response, "Expired JWT token");
+            sendErrorResponse(response, "jwt expired");
         }
         // Возвращаем null, чтобы показать, что исключение не было полностью обработано и позволить другим резолверам обработать его.
         return null;

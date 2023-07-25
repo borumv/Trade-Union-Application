@@ -12,9 +12,13 @@ import backend.persist.entity.RefreshToken;
 import backend.persist.models.TokenRefreshResponse;
 import backend.requests.AuthenticationRequest;
 import backend.requests.RegisterRequest;
+import backend.requests.TokenIsValidRequest;
 import backend.security.TokenRefreshRequest;
 import backend.services.AuthenticationService;
 import backend.services.RefreshTokenService;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -104,5 +108,11 @@ public class AuthenticationController {
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                                                              "Refresh token is not in database!"));
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<Boolean> isValidToken(@RequestBody TokenIsValidRequest tokenRequest){
+        boolean isValid = authenticationService.isValidToken(tokenRequest.getToken(), tokenRequest.getEmail());
+        return ResponseEntity.ok(isValid);
     }
 }

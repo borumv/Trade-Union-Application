@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/union")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class TradeUnionController {
 
     @Autowired

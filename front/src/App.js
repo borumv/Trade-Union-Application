@@ -11,7 +11,6 @@ import NavigationDrawer from './node_modules/components/NavBar/DraveNavBar/Navig
 import './dx-styles.scss';
 import useAuth from './node_modules/hooks/useAuth'
 import { useScreenSizeClass } from './node_modules/utils/media-query';
-// import FAQ from './node_modules/components/faq/faq'
 import ScrollToTop from './node_modules/components/scrollToTop/scrollToTop'
 import Faq from './node_modules/components/faq_/faqs'
 

@@ -5,8 +5,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,18 +31,21 @@ public class JwtTokenFilter extends GenericFilterBean {
 
     private final UserDetailsService userDetailsService;
 
+    private final AuthEntryPointJwt authEntryPointJwt;
     /**
      * Constructs a new JwtTokenFilter with the JwtTokenProvider.
      *
      * @param jwtTokenProvider   the JwtTokenProvider used for token operations
      * @param userDetailsService
+     * @param authEntryPointJwt
      */
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider,
                           @Qualifier("userDetailsServiceImpl")
-                          UserDetailsService userDetailsService) {
+                          UserDetailsService userDetailsService, AuthEntryPointJwt authEntryPointJwt) {
 
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
+        this.authEntryPointJwt = authEntryPointJwt;
     }
 
     /**
@@ -58,6 +63,8 @@ public class JwtTokenFilter extends GenericFilterBean {
                          ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
         final String authHeader = ( (HttpServletRequest) servletRequest ).getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -67,11 +74,11 @@ public class JwtTokenFilter extends GenericFilterBean {
         }
         jwt = authHeader.substring(7);
         userEmail = jwtTokenProvider.extractEmail(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        try{if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             //Get our users data from db
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             //check if the user is valid or not
-            if (jwtTokenProvider.isTokenValid(jwt, userDetails)) {
+            if (jwtTokenProvider.isTokenValid(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -82,7 +89,13 @@ public class JwtTokenFilter extends GenericFilterBean {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+        }}catch (AuthenticationException e) {
+
+            SecurityContextHolder.clearContext();
+            authEntryPointJwt.commence(request, response, e);
+
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

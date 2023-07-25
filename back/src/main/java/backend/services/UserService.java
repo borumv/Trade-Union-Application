@@ -2,6 +2,7 @@ package backend.services;
 
 import backend.exceptions.ErrorNewPasswordException;
 import backend.exceptions.UserNameNotFoundException;
+import backend.exceptions.UserNotFoundException;
 import backend.persist.entity.User;
 import backend.persist.models.UserModel;
 import backend.persist.repositories.PermoRepo;
@@ -40,6 +41,18 @@ public class UserService {
     public User save(User user) {
 
         return userRepo.save(user);
+    }
+
+    /**
+     * Find by id
+     *
+     * @param id the user to save
+     * @return the User or UserNotFoundException
+     */
+    public User findById(Long id) {
+
+        return userRepo.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     /**

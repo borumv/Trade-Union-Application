@@ -49,17 +49,17 @@ public class User {
     @Column(name = "status")
     private Status status;
 
-    @ManyToMany
-    @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)
-    @JsonIgnore
-    private List<Permission> permissionList;
+//    @ManyToMany
+//    @JoinColumn(name = "role", referencedColumnName = "role", insertable = false, updatable = false)
+//    @JsonIgnore
+//    private List<Permission> permissionList;
 
     public User() {
 
     }
 
     @Builder
-    public User(Long id, String email, String firstName, String lastName, String password, Role role, Status status, List<Permission> permissionList) {
+    public User(Long id, String email, String firstName, String lastName, String password, Role role, Status status) {
 
         this.id = id;
         this.email = email;
@@ -68,6 +68,5 @@ public class User {
         this.password = password;
         this.role = role;
         this.status = status;
-        this.permissionList = permissionList;
     }
 }

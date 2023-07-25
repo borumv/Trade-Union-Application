@@ -28,8 +28,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/education")
 @Validated
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class ClassEducationController {
+
 
     @Autowired
     ClassEducationService classEducationService;
@@ -48,8 +49,7 @@ public class ClassEducationController {
             @PathVariable
             @Min(value = 1, message = "{classeducation.id.size.error}") @Max(10) Integer typeEducationId) {
 
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class:{} Action: getAllWhoTakeThisTypeEducation", a.getName(), "ClassEducationController");
+
         return classEducationService.getAllWhoTakeThisTypeEducation(typeEducationId).stream().map(PersonModel::toModel).collect(Collectors.toList());
     }
 
@@ -62,8 +62,6 @@ public class ClassEducationController {
     @GetMapping()
     public List<ClassEducation> findAll() {
 
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: findAll", a.getName(), "ClassEducationController");
         return classEducationService.getAllType();
     }
 
@@ -79,8 +77,6 @@ public class ClassEducationController {
             @PathVariable
             @Min(0) int id) {
 
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("UserId: {}. Class: {} Action: findById", a.getName(), "ClassEducationController");
         return ClassEducationModel.toModel(classEducationService.findById(id));
     }
 

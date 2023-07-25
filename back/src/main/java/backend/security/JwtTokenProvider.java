@@ -1,14 +1,14 @@
 package backend.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import backend.validator.error.ValidationError;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -27,6 +29,7 @@ import java.util.function.Function;
  * @author Boris Vlasevsky
  */
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
@@ -59,7 +62,7 @@ public class JwtTokenProvider {
 
         Claims claims = Jwts.claims().setSubject(username);
         Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
-        Instant expiration = issuedAt.plus(30, ChronoUnit.MINUTES);
+        Instant expiration = issuedAt.plus(1, ChronoUnit.MINUTES);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
@@ -81,10 +84,22 @@ public class JwtTokenProvider {
      * @param token the JWT token to validate
      * @throws JwtException if the token is invalid or expired
      */
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, String userDetails) throws AuthenticationException{
 
-        final String email = extractEmail(token);
-        return ( email.equals(userDetails.getUsername()) ) && ! isTokenExpired(token);
+        try {
+            final String email = extractEmail(token);
+            if (( email.equals(userDetails) ) && ! isTokenExpired(token))
+                return true;
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
+        }
+        return false;
     }
 
     private boolean isTokenExpired(String token) {
@@ -117,19 +132,20 @@ public class JwtTokenProvider {
      * @param <T>            the type of the claim value
      * @return the extracted claim value
      */
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws AuthenticationException {
 
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws AuthenticationException{
 
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+              return Jwts.parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
     }
 
     /**
@@ -138,7 +154,7 @@ public class JwtTokenProvider {
      * @param token the JWT token
      * @return the extracted email
      */
-    public String extractEmail(String token) {
+    public String extractEmail(String token) throws AuthenticationException{
 
         return extractClaim(token, Claims::getSubject);
     }

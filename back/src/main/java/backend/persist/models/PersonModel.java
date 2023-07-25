@@ -17,7 +17,6 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class PersonModel extends SlackPersonModel {
 
-    private int id;
     private String patronymic;
     private String education;
     private Date birth;
@@ -31,7 +30,7 @@ public class PersonModel extends SlackPersonModel {
     public static PersonModel toModel(PersonEntity personEntity) {
 
         PersonModel personModel = new PersonModel();
-        personModel.setEducation(personEntity.getEducation());
+        personModel.setEducation(personEntity.getEducation      ());
         personModel.setId(personEntity.getId());
         personModel.setFirstName(personEntity.getFirstName());
         personModel.setLastName(personEntity.getLastName());

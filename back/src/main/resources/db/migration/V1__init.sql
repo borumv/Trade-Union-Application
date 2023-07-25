@@ -108,7 +108,7 @@ CREATE SEQUENCE users_id_seq
     INCREMENT 1
     MINVALUE  1
     MAXVALUE 9223372036854775807
-    START WITH 1
+    START WITH 5
     CACHE 1;
 
 -- ----------------------------
@@ -124,7 +124,7 @@ CREATE TABLE users (
                                 "role" varchar(20) DEFAULT 'USER'::character varying,
                                 "status" varchar(20) NOT NULL DEFAULT 'ACTIVE'::character varying
 );
-INSERT INTO users("id", "email", "first_name", "last_name", "password", "role", "status") VALUES (5, 'borya123@gmail.com', 'string', 'string', '$2a$10$2qEQj1NvMuc9NQ4yJfoZleq2kAlx/TsHQsnEy3Bgxi5NwZ4Qdgyay', 'USER', 'ACTIVE');
+INSERT INTO users("id", "email", "first_name", "last_name", "password", "role", "status") VALUES (4, 'borya123@gmail.com', 'string', 'string', '$2a$10$2qEQj1NvMuc9NQ4yJfoZleq2kAlx/TsHQsnEy3Bgxi5NwZ4Qdgyay', 'USER', 'ACTIVE');
 INSERT INTO users("id", "email", "first_name", "last_name", "password", "role", "status") VALUES (1, 'admin@gmail.com', 'Boris', 'Borisov', '$2a$10$2qEQj1NvMuc9NQ4yJfoZleq2kAlx/TsHQsnEy3Bgxi5NwZ4Qdgyay', 'ADMIN', 'ACTIVE');
 INSERT INTO users("id", "email", "first_name", "last_name", "password", "role", "status") VALUES (3, 'user2@gmail.com', 'Kostya', 'Kostkov', '$2a$10$2qEQj1NvMuc9NQ4yJfoZleq2kAlx/TsHQsnEy3Bgxi5NwZ4Qdgyay', 'USER', 'BANNED');
 INSERT INTO users("id", "email", "first_name", "last_name", "password", "role", "status") VALUES (2, 'user@gmail.com', 'Vasya', 'Vaskov', '$2a$10$2qEQj1NvMuc9NQ4yJfoZleq2kAlx/TsHQsnEy3Bgxi5NwZ4Qdgyay', 'USER', 'ACTIVE');

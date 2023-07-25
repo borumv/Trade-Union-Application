@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/union/docmember")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class DocMemberController {
 
     @Autowired

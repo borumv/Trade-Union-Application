@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/union/workplace")
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"cors.allow"})
 public class WorkPlaceController {
 
     @Autowired

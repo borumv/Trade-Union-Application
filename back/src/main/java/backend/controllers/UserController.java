@@ -36,8 +36,8 @@ import java.util.Map;
 @RestController
 @Validated
 @RequestMapping("/api/user")
-@CrossOrigin(origins = {"http://localhost:3000"})
 @Slf4j
+@CrossOrigin(origins = {"cors.allow"})
 public class UserController {
 
     @Autowired

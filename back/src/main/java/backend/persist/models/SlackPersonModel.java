@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class SlackPersonModel extends AbstractModel {
 
+    private Integer id;
     private String firstName;
     private String lastName;
 
@@ -25,6 +26,7 @@ public class SlackPersonModel extends AbstractModel {
     public static SlackPersonModel toModel(PersonEntity personEntity) {
 
         SlackPersonModel slackPersonModel = new SlackPersonModel();
+        slackPersonModel.setId(personEntity.getId());
         slackPersonModel.setFirstName(personEntity.getFirstName());
         slackPersonModel.setLastName(personEntity.getLastName());
         return slackPersonModel;

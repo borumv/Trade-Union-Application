@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +55,6 @@ public class AuthenticationService {
 
     private final RefreshTokenService refreshTokenService;
 
-
-
     /**
      * Constructs an AuthenticationService with the specified dependencies.
      *
@@ -71,8 +70,6 @@ public class AuthenticationService {
         this.jwtTokenProvider = jwtTokenProvider;
         this.refreshTokenService = refreshTokenService;
     }
-
-
 
     /**
      * Authenticates a user based on the provided AuthenticationRequest.
@@ -170,7 +167,18 @@ public class AuthenticationService {
         }
     }
 
-    public String generateTokenByUserName(String name){
+    public String generateTokenByUserName(String name) {
+
         return jwtTokenProvider.createToken(name);
+    }
+
+    public boolean isValidToken(String token, String email) {
+
+        try {
+            return jwtTokenProvider.isTokenValid(token, email);
+        } catch (Exception e) {
+            return false;
+
+        }
     }
 }
