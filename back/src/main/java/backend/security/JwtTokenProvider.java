@@ -62,7 +62,7 @@ public class JwtTokenProvider {
 
         Claims claims = Jwts.claims().setSubject(username);
         Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
-        Instant expiration = issuedAt.plus(1, ChronoUnit.MINUTES);
+        Instant expiration = issuedAt.plus(30, ChronoUnit.MINUTES);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
