@@ -59,22 +59,14 @@ cd fullstack-spring-react
 ```
 
 ### Configuration
-2. Create an `application.properties` file in the `src/main/resources` directory based on the provided `application.properties.template`. Replace the placeholders `${DB_USERNAME}`, `${DB_PASSWORD}`, and `${JWT_SECRET}` with your PostgreSQL database username, password, and JWT secret respectively.
-3. Set up environment variables:
-- On Unix-based systems (Linux or macOS):
-```bash
-export DB_USERNAME=your_database_username
-export DB_PASSWORD=your_database_password
-export JWT_SECRET=your_jwt_secret
-```
-- On Windows:
-```bash
-set DB_USERNAME=your_database_username
-set DB_PASSWORD=your_database_password
-set JWT_SECRET=your_jwt_secret
+2.Create an `application-local.properties` file in the `resources` folder and write the following parameters in it
+
+```properties
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 ```
 
-4. Install frontend dependencies and build the React application:
+3. Install frontend dependencies and build the React application:
 ```bash
 cd frontend
 npm install
